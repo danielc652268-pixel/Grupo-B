@@ -1,0 +1,121 @@
+Grupo B, Integrantes:
+Milagros De la Cruz
+Jean Castro
+Daniel Calderon
+
+Nombre del proyecto:
+JDM Ent.
+Grupo B, Integrantes:
+
+Propuesta de proyecto:
+Será una plataforma web para gestionar y dar seguimiento a las necesidades de mantenimiento de condominios y residenciales. El sistema permitirá que los residentes reporten problemas o solicitudes de mantenimiento desde la plataforma, mientras que los administradores podrán revisar, asignar y dar seguimiento a estas solicitudes hasta su resolución.
+El objetivo principal es centralizar la gestión de mantenimiento, evitando que los reportes se pierdan entre mensajes de WhatsApp, llamadas o comunicaciones informales.
+Usuarios del sistema
+
+Podrían manejar tres roles principales:
+👩‍💼 Administrador
+Es quien gestiona el mantenimiento del residencial.
+Puede:
+Ver todos los reportes.
+Crear solicitudes de mantenimiento.
+Asignar tareas a empleados/técnicos.
+Cambiar el estado de una solicitud.
+Establecer prioridades.
+Ver información del residente que realizó el reporte.
+
+👷 Técnico / Personal de mantenimiento
+Recibe las tareas asignadas por el administrador.
+Puede:
+Ver sus tareas asignadas.
+Consultar los detalles del problema.
+Cambiar el estado de una tarea.
+Agregar comentarios.
+Registrar qué trabajo realizó.
+
+🏠 Residente
+Es quien reporta los problemas.
+Puede:
+Crear un reporte en un formulario con: Indicar el apartamento y edificio. Escribir una descripción. Adjuntar fotografías (opcional) Consultar sus reportes. Consultar el historial de solicitudes.
+Módulos del sistema
+
+🔐 1. Autenticación
+Registro
+Login
+Logout
+Recuperación de contraseña
+Roles y permisos
+Protección de rutas
+
+2. Historial
+Ver reportes creados
+Noticias y/o comunicaciones
+Reportes solucionados
+
+
+3. Gestión de usuarios
+El administrador puede:
+Nota: Primero habrán usuarios registrados en una base de datos y luego podemos incluir la función de “agregar residentes”
+Editar usuarios.
+Desactivar usuarios.
+Asignar roles.
+
+🏢 3. Gestión del residencial
+Registrar:
+Residencial/condominio.
+Edificios.
+Apartamentos.
+Áreas comunes.
+Estacionamientos, si aplica.
+
+👩‍💼 Administrador
+Historial
+Ver cantidad de reportes.
+Ver reportes pendientes, asignados, en proceso y resueltos.
+Ver reportes por prioridad.
+Ver estadísticas de mantenimiento. (opcional)
+Ver tareas pendientes de los técnicos.
+
+Gestión de técnicos
+Agregar técnicos.
+Editar información de técnicos.
+Activar/desactivar técnicos.
+Definir especialidad.
+Ver tareas asignadas.
+Consultar historial de trabajo.
+Gestión del residencial
+Registrar edificios.
+Registrar apartamentos.
+Registrar áreas comunes.
+Asociar apartamentos con residentes registrados.
+
+Historial
+Consultar todas las acciones realizadas sobre un reporte.
+Ver quién atendió el problema.
+Ver fechas de asignación y resolución.
+Consultar comentarios y evidencias.
+
+👷 Técnico
+Mis tareas
+Ver tareas asignadas.
+Ver detalles del problema.
+Ver ubicación.
+Ver prioridad.
+Ver información necesaria para realizar el trabajo.
+Gestión de tareas
+Aceptar una tarea.
+Cambiar estado.
+Marcar tarea como En proceso.
+Marcar tarea como Resuelta.
+Agregar comentarios.
+Registrar el trabajo realizado.
+Registrar materiales utilizados.
+Adjuntar fotografías como evidencia.
+Historial
+Ver tareas completadas.
+Consultar trabajos anteriores.
+
+
+
+
+
+
