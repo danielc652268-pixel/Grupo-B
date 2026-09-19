@@ -9,10 +9,19 @@ export default function FormularioUsuario() {
     correo: '',
     contrasena: '',
     rol: '',
+    apartamento: '',
+
   })
 
   const manejarCambio = (e) => {
-    setDatos({ ...datos, [e.target.name]: e.target.value })
+    const { name, value } = e.target
+    const nuevosDatos = { ...datos, [name]: value }
+
+    if (name === 'rol' && value !== 'Residente') {
+      nuevosDatos.apartamento = ''
+    }
+
+    setDatos(nuevosDatos)
   }
 
   const manejarEnvio = (e) => {
@@ -72,6 +81,21 @@ export default function FormularioUsuario() {
           </option>
         ))}
       </select>
+
+      {datos.rol === 'Residente' && (
+        <>
+          <label htmlFor="apartamento">Apartamento</label>
+          <input
+            id="apartamento"
+            name="apartamento"
+            type="text"
+            placeholder="Ej: A-101"
+            value={datos.apartamento}
+            onChange={manejarCambio}
+            required
+          />
+        </>
+      )}
 
       <button type="submit">Crear usuario</button>
     </form>
