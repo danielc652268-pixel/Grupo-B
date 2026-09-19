@@ -1,0 +1,43 @@
+.form-usuario {
+  max-width: 400px;
+  margin: 40px auto;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-family: sans-serif;
+}
+
+.form-usuario h2 {
+  margin: 0 0 8px;
+}
+
+.form-usuario label {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.form-usuario input,
+.form-usuario select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.form-usuario button {
+  margin-top: 12px;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  background: #1f6feb;
+  color: #fff;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.form-usuario button:hover {
+  background: #1a5fd0;
+}
