@@ -1,5 +1,18 @@
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import FormularioUsuario from './components/FormularioUsuario'
+import Login from './assets/components/Login'
 
-export default function App() {
-  return <FormularioUsuario />
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/crear-usuario" element={<FormularioUsuario />} />
+
+        <Route path="/" element={<Navigate to="/login" replace />} />
+      </Routes>
+    </BrowserRouter>
+  )
 }
+
+export default App
