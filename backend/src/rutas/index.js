@@ -5,6 +5,7 @@ const { verifyToken, SECRET } = require("../middleware/jwt.js")
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 const residencialController = require('../controllers/residencial.controller')
+const usuarioController = require('../controllers/usuario.controller')
 
 route.get("/test", verifyToken, (req, res) => {
 
@@ -150,6 +151,27 @@ route.post("/residenciales", verifyToken, (req, res, next) => {
 }, residencialController.crearResidencial)
 
 route.get("/residenciales", verifyToken, residencialController.obtenerResidenciales)
+
+route.put("/residenciales/:id", verifyToken, (req, res, next) => {
+    if (req.user.role !== 1) {
+        return res.status(403).send({ error: "No tienes permiso para editar residenciales" })
+    }
+    next()
+}, residencialController.actualizarResidencial)
+
+route.patch("/residenciales/:id/desactivar", verifyToken, (req, res, next) => {
+    if (req.user.role !== 1) {
+        return res.status(403).send({ error: "No tienes permiso para desactivar residenciales" })
+    }
+    next()
+}, residencialController.desactivarResidencial)
+
+route.get("/usuarios", verifyToken, (req, res, next) => {
+    if (req.user.role !== 1) {
+        return res.status(403).send({ error: "No tienes permiso para ver los usuarios" })
+    }
+    next()
+}, usuarioController.obtenerUsuarios)
 
 route.get("/me", verifyToken, (req, res) => {
     res.status(200).send(req.user)

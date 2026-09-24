@@ -1,43 +1,135 @@
-.form-usuario {
-  max-width: 400px;
-  margin: 40px auto;
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-family: sans-serif;
+.form-usuario-container {
+    text-align: center;
+    margin: 20px;
 }
 
-.form-usuario h2 {
-  margin: 0 0 8px;
+.btn-abrir-usuario {
+    padding: 12px 24px;
+    background-color: #1f6feb;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    box-shadow: 0 4px 6px rgba(79, 70, 229, 0.3);
+    transition: all 0.3s;
 }
 
-.form-usuario label {
-  font-weight: 600;
-  font-size: 14px;
+.btn-abrir-usuario:hover {
+    background-color: #1a5fd0;
+    transform: translateY(-2px);
 }
 
-.form-usuario input,
-.form-usuario select {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 14px;
+.modal-overlay-usuario {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(1px);
 }
 
-.form-usuario button {
-  margin-top: 12px;
-  padding: 10px;
-  border: none;
-  border-radius: 6px;
-  background: #1f6feb;
-  color: #fff;
-  font-size: 15px;
-  cursor: pointer;
+.modal-contenido-usuario {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    color: #333333;
+    font-family: system-ui, -apple-system, sans-serif;
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
-.form-usuario button:hover {
-  background: #1a5fd0;
+.modal-contenido-usuario h2 {
+    margin-top: 0;
+    margin-bottom: 25px;
+    color: #111827;
+    text-align: center;
+    font-weight: bold;
+}
+
+.grupo-input-usuario {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.grupo-input-usuario label {
+    margin-bottom: 6px;
+    font-weight: 600;
+    font-size: 14px;
+    color: #374151;
+}
+
+.grupo-input-usuario input,
+.grupo-input-usuario select {
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    background-color: #f9fafb;
+    color: #111827;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.grupo-input-usuario input:focus,
+.grupo-input-usuario select:focus {
+    border-color: #4f46e5;
+}
+
+.botones-accion-usuario {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 25px;
+}
+
+.btn-guardar-usuario {
+    padding: 12px 20px;
+    background-color: #10b981;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 15px;
+    flex: 1;
+    margin-right: 10px;
+    transition: background-color 0.2s;
+}
+
+.btn-guardar-usuario:hover {
+    background-color: #059669;
+}
+
+.btn-guardar-usuario:disabled {
+    background-color: #d1d5db;
+    color: #6b7280;
+    cursor: not-allowed;
+}
+
+.btn-cancelar-usuario {
+    padding: 12px 20px;
+    background-color: #ef4444;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 15px;
+    flex: 1;
+    transition: background-color 0.2s;
+}
+
+.btn-cancelar-usuario:hover {
+    background-color: #dc2626;
 }

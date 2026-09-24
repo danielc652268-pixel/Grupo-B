@@ -1,0 +1,70 @@
+.tabla-usuarios-container {
+    margin-top: 24px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    overflow-x: auto;
+}
+
+.tabla-usuarios {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 14px;
+}
+
+.tabla-usuarios thead {
+    background-color: #1565c0;
+}
+
+.tabla-usuarios th {
+    color: #ffffff;
+    text-align: left;
+    padding: 14px 16px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.tabla-usuarios td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #e5e7eb;
+    color: #111827;
+}
+
+.tabla-usuarios tbody tr:hover {
+    background-color: #eaf2ff;
+}
+
+.estado-badge-usuario {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.estado-activo-usuario {
+    background-color: rgba(16, 185, 129, 0.15);
+    color: #059669;
+}
+
+.estado-inactivo-usuario {
+    background-color: rgba(239, 68, 68, 0.15);
+    color: #dc2626;
+}
+
+.tabla-usuarios-mensaje {
+    margin-top: 24px;
+    font-family: system-ui, -apple-system, sans-serif;
+    color: #374151;
+}
+
+.tabla-usuarios-error {
+    color: #d32f2f;
+}
+
+.tabla-usuarios-vacio {
+    text-align: center;
+    color: #6b7280;
+    padding: 24px;
+}

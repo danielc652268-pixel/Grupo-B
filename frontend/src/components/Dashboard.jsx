@@ -2,8 +2,8 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import Sidebar from './Sidebar'
-import FormularioUsuario from './FormularioUsuario'
-import FormularioResidencialyEdificios from './FormularioResidencialyEdificios'
+import PanelUsuarios from './PanelUsuarios'
+import PanelResidenciales from './PanelResidenciales'
 import './Dashboard.css'
 
 const NOMBRES_ROL = {
@@ -47,8 +47,8 @@ export default function Dashboard() {
 
         <main className="layout-content">
           {vistaActiva === 'inicio' && <p>Bienvenido, {usuario?.username}</p>}
-          {vistaActiva === 'crear-usuario' && rol === 1 && <FormularioUsuario />}
-          {vistaActiva === 'residencial' && rol === 1 && <FormularioResidencialyEdificios />}
+          {vistaActiva === 'crear-usuario' && rol === 1 && <PanelUsuarios />}
+          {vistaActiva === 'residencial' && rol === 1 && <PanelResidenciales />}
         </main>
       </div>
     </div>

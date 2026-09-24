@@ -8,16 +8,19 @@ const ROLES = [
   { id: 3, nombre: 'Residente' },
 ]
 
-export default function FormularioUsuario() {
-  const [datos, setDatos] = useState({
-    nombre: '',
-    correo: '',
-    contrasena: '',
-    rol: '',
-    apartamento: '',
-  })
-  const [mensaje, setMensaje] = useState('')
+const DATOS_VACIOS = {
+  nombre: '',
+  correo: '',
+  contrasena: '',
+  rol: '',
+  apartamento: '',
+}
+
+export default function FormularioUsuario({ onGuardado }) {
+  const [isOpen, setIsOpen] = useState(false)
+  const [datos, setDatos] = useState(DATOS_VACIOS)
   const [error, setError] = useState('')
+  const [enviando, setEnviando] = useState(false)
 
   const manejarCambio = (e) => {
     const { name, value } = e.target
@@ -30,101 +33,145 @@ export default function FormularioUsuario() {
     setDatos(nuevosDatos)
   }
 
+  const cerrarModal = () => {
+    setIsOpen(false)
+    setDatos(DATOS_VACIOS)
+    setError('')
+  }
+
   const manejarEnvio = async (e) => {
     e.preventDefault()
     setError('')
-    setMensaje('')
+    setEnviando(true)
 
     try {
-      await axios.post('http://localhost:3000/register', {
-        nombre: datos.nombre,
-        email: datos.correo,
-        password: datos.contrasena,
-        role_id: Number(datos.rol),
-      })
-      setMensaje('Usuario creado correctamente')
-      setDatos({ nombre: '', correo: '', contrasena: '', rol: '', apartamento: '' })
+      await axios.post(
+        'http://localhost:3000/register',
+        {
+          nombre: datos.nombre,
+          email: datos.correo,
+          password: datos.contrasena,
+          role_id: Number(datos.rol),
+        },
+        { withCredentials: true }
+      )
+
+      alert('¡Usuario creado exitosamente!')
+      cerrarModal()
+      onGuardado?.()
     } catch (err) {
       if (err.response?.status === 409) {
         setError('Ese correo ya está registrado.')
       } else {
         setError('No se pudo crear el usuario. Revisa los datos.')
       }
+    } finally {
+      setEnviando(false)
     }
   }
 
   return (
-    <form className="form-usuario" onSubmit={manejarEnvio}>
-      <h2>Crear usuario</h2>
+    <div className="form-usuario-container">
 
-      {mensaje && <p style={{ color: 'green' }}>{mensaje}</p>}
-      {error && <p style={{ color: '#d32f2f' }}>{error}</p>}
-
-      <label htmlFor="nombre">Nombre</label>
-      <input
-        id="nombre"
-        name="nombre"
-        type="text"
-        placeholder="Nombre completo"
-        value={datos.nombre}
-        onChange={manejarCambio}
-        required
-      />
-
-      <label htmlFor="correo">Correo</label>
-      <input
-        id="correo"
-        name="correo"
-        type="email"
-        placeholder="correo@ejemplo.com"
-        value={datos.correo}
-        onChange={manejarCambio}
-        required
-      />
-
-      <label htmlFor="contrasena">Contraseña inicial</label>
-      <input
-        id="contrasena"
-        name="contrasena"
-        type="password"
-        placeholder="Contraseña inicial"
-        value={datos.contrasena}
-        onChange={manejarCambio}
-        required
-      />
-
-      <label htmlFor="rol">Rol</label>
-      <select
-        id="rol"
-        name="rol"
-        value={datos.rol}
-        onChange={manejarCambio}
-        required
+      <button
+        onClick={() => setIsOpen(true)}
+        className="btn-abrir-usuario"
       >
-        <option value="">Selecciona un rol</option>
-        {ROLES.map((rol) => (
-          <option key={rol.id} value={rol.id}>
-            {rol.nombre}
-          </option>
-        ))}
-      </select>
+        + Crear Usuario
+      </button>
 
-      {datos.rol === '3' && (
-        <>
-          <label htmlFor="apartamento">Apartamento</label>
-          <input
-            id="apartamento"
-            name="apartamento"
-            type="text"
-            placeholder="Ej: A-101"
-            value={datos.apartamento}
-            onChange={manejarCambio}
-            required
-          />
-        </>
+      {isOpen && (
+        <div className="modal-overlay-usuario">
+          <div className="modal-contenido-usuario">
+            <h2>Crear Usuario</h2>
+
+            {error && <p style={{ color: '#d32f2f' }}>{error}</p>}
+
+            <form onSubmit={manejarEnvio}>
+              <div className="grupo-input-usuario">
+                <label htmlFor="nombre">Nombre:</label>
+                <input
+                  id="nombre"
+                  name="nombre"
+                  type="text"
+                  placeholder="Nombre completo"
+                  value={datos.nombre}
+                  onChange={manejarCambio}
+                  required
+                />
+              </div>
+
+              <div className="grupo-input-usuario">
+                <label htmlFor="correo">Correo:</label>
+                <input
+                  id="correo"
+                  name="correo"
+                  type="email"
+                  placeholder="correo@ejemplo.com"
+                  value={datos.correo}
+                  onChange={manejarCambio}
+                  required
+                />
+              </div>
+
+              <div className="grupo-input-usuario">
+                <label htmlFor="contrasena">Contraseña inicial:</label>
+                <input
+                  id="contrasena"
+                  name="contrasena"
+                  type="password"
+                  placeholder="Contraseña inicial"
+                  value={datos.contrasena}
+                  onChange={manejarCambio}
+                  required
+                />
+              </div>
+
+              <div className="grupo-input-usuario">
+                <label htmlFor="rol">Rol:</label>
+                <select
+                  id="rol"
+                  name="rol"
+                  value={datos.rol}
+                  onChange={manejarCambio}
+                  required
+                >
+                  <option value="" disabled>Seleccione un rol...</option>
+                  {ROLES.map((rol) => (
+                    <option key={rol.id} value={rol.id}>
+                      {rol.nombre}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {datos.rol === '3' && (
+                <div className="grupo-input-usuario">
+                  <label htmlFor="apartamento">Apartamento:</label>
+                  <input
+                    id="apartamento"
+                    name="apartamento"
+                    type="text"
+                    placeholder="Ej: A-101"
+                    value={datos.apartamento}
+                    onChange={manejarCambio}
+                    required
+                  />
+                </div>
+              )}
+
+              <div className="botones-accion-usuario">
+                <button type="submit" className="btn-guardar-usuario" disabled={enviando}>
+                  {enviando ? 'Guardando...' : 'Crear Usuario'}
+                </button>
+                <button type="button" onClick={cerrarModal} className="btn-cancelar-usuario">
+                  Cancelar
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
       )}
-
-      <button type="submit">Crear usuario</button>
-    </form>
+    </div>
   )
 }

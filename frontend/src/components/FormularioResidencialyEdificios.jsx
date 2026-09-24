@@ -1,23 +1,53 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import './FormularioResidencialyEdificios.css';
 
-export default function FormularioResidencialyEdificios() {
+const DATOS_VACIOS = {
+    nombre: '',
+    direccion: '',
+    ciudad: '',
+    telefono: '',
+    estado: '',
+    fechaRegistro: ''
+};
+
+export default function FormularioResidencialyEdificios({ residencialEditar, onCerrarEdicion, onGuardado }) {
     const [isOpen, setIsOpen] = useState(false);
-    const [infoResidencial, setInfoResidencial] = useState({
-        nombre: '',
-        direccion: '',
-        ciudad: '',
-        telefono: '',
-        estado: '',
-        fechaRegistro: ''
-    });
+    const [infoResidencial, setInfoResidencial] = useState(DATOS_VACIOS);
     const [error, setError] = useState('');
     const [enviando, setEnviando] = useState(false);
+
+    const editando = Boolean(residencialEditar);
+    const modalAbierto = editando || isOpen;
+
+    useEffect(() => {
+        if (residencialEditar) {
+            setInfoResidencial({
+                nombre: residencialEditar.nombre || '',
+                direccion: residencialEditar.direccion || '',
+                ciudad: residencialEditar.ciudad || '',
+                telefono: residencialEditar.telefono || '',
+                estado: residencialEditar.estado || '',
+                fechaRegistro: residencialEditar.fecha_registro
+                    ? String(residencialEditar.fecha_registro).slice(0, 10)
+                    : ''
+            });
+            setError('');
+        }
+    }, [residencialEditar]);
 
     const manejoCambio = (e) => {
         const { name, value } = e.target;
         setInfoResidencial({ ...infoResidencial, [name]: value });
+    };
+
+    const cerrarModal = () => {
+        setIsOpen(false);
+        setInfoResidencial(DATOS_VACIOS);
+        setError('');
+        if (editando) {
+            onCerrarEdicion?.();
+        }
     };
 
     const handleSubmit = async (e) => {
@@ -26,25 +56,30 @@ export default function FormularioResidencialyEdificios() {
         setEnviando(true);
 
         try {
-            await axios.post(
-                'http://localhost:3000/residenciales',
-                infoResidencial,
-                { withCredentials: true }
-            );
+            if (editando) {
+                await axios.put(
+                    `http://localhost:3000/residenciales/${residencialEditar.id}`,
+                    infoResidencial,
+                    { withCredentials: true }
+                );
+                alert("¡Residencial/Edificio actualizado exitosamente!");
+            } else {
+                await axios.post(
+                    'http://localhost:3000/residenciales',
+                    infoResidencial,
+                    { withCredentials: true }
+                );
+                alert("¡Residencial/Edificio registrado exitosamente!");
+            }
 
-            alert("¡Residencial/Edificio registrado exitosamente!");
-
+            setInfoResidencial(DATOS_VACIOS);
             setIsOpen(false);
-            setInfoResidencial({
-                nombre: '',
-                direccion: '',
-                ciudad: '',
-                telefono: '',
-                estado: '',
-                fechaRegistro: ''
-            });
+            onGuardado?.();
+            if (editando) {
+                onCerrarEdicion?.();
+            }
         } catch (err) {
-            setError(err.response?.data?.error || 'No se pudo registrar el residencial.');
+            setError(err.response?.data?.error || 'No se pudo guardar el residencial.');
         } finally {
             setEnviando(false);
         }
@@ -61,10 +96,10 @@ export default function FormularioResidencialyEdificios() {
             </button>
 
 
-            {isOpen && (
+            {modalAbierto && (
                 <div className="modal-overlay-residencial">
                     <div className="modal-contenido-residencial">
-                        <h2>Registro de Residencial</h2>
+                        <h2>{editando ? 'Editar Residencial' : 'Registro de Residencial'}</h2>
 
                         {error && <p style={{ color: '#d32f2f' }}>{error}</p>}
 
@@ -145,9 +180,9 @@ export default function FormularioResidencialyEdificios() {
 
                             <div className="botones-accion-residencial">
                                 <button type="submit" className="btn-guardar-residencial" disabled={enviando}>
-                                    {enviando ? 'Guardando...' : 'Guardar Registro'}
+                                    {enviando ? 'Guardando...' : editando ? 'Guardar Cambios' : 'Guardar Registro'}
                                 </button>
-                                <button type="button" onClick={() => setIsOpen(false)} className="btn-cancelar-residencial">
+                                <button type="button" onClick={cerrarModal} className="btn-cancelar-residencial">
                                     Cancelar
                                 </button>
                             </div>
