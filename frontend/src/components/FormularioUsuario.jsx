@@ -1,7 +1,12 @@
 import { useState } from 'react'
+import axios from 'axios'
 import './FormularioUsuario.css'
 
-const ROLES = ['Administrador', 'Técnico', 'Residente']
+const ROLES = [
+  { id: 1, nombre: 'Administrador' },
+  { id: 2, nombre: 'Técnico' },
+  { id: 3, nombre: 'Residente' },
+]
 
 export default function FormularioUsuario() {
   const [datos, setDatos] = useState({
@@ -10,28 +15,50 @@ export default function FormularioUsuario() {
     contrasena: '',
     rol: '',
     apartamento: '',
-
   })
+  const [mensaje, setMensaje] = useState('')
+  const [error, setError] = useState('')
 
   const manejarCambio = (e) => {
     const { name, value } = e.target
     const nuevosDatos = { ...datos, [name]: value }
 
-    if (name === 'rol' && value !== 'Residente') {
+    if (name === 'rol' && value !== '3') {
       nuevosDatos.apartamento = ''
     }
 
     setDatos(nuevosDatos)
   }
 
-  const manejarEnvio = (e) => {
+  const manejarEnvio = async (e) => {
     e.preventDefault()
-    // El guardado se implementa en #24
+    setError('')
+    setMensaje('')
+
+    try {
+      await axios.post('http://localhost:3000/register', {
+        nombre: datos.nombre,
+        email: datos.correo,
+        password: datos.contrasena,
+        role_id: Number(datos.rol),
+      })
+      setMensaje('Usuario creado correctamente')
+      setDatos({ nombre: '', correo: '', contrasena: '', rol: '', apartamento: '' })
+    } catch (err) {
+      if (err.response?.status === 409) {
+        setError('Ese correo ya está registrado.')
+      } else {
+        setError('No se pudo crear el usuario. Revisa los datos.')
+      }
+    }
   }
 
   return (
     <form className="form-usuario" onSubmit={manejarEnvio}>
       <h2>Crear usuario</h2>
+
+      {mensaje && <p style={{ color: 'green' }}>{mensaje}</p>}
+      {error && <p style={{ color: '#d32f2f' }}>{error}</p>}
 
       <label htmlFor="nombre">Nombre</label>
       <input
@@ -76,13 +103,13 @@ export default function FormularioUsuario() {
       >
         <option value="">Selecciona un rol</option>
         {ROLES.map((rol) => (
-          <option key={rol} value={rol}>
-            {rol}
+          <option key={rol.id} value={rol.id}>
+            {rol.nombre}
           </option>
         ))}
       </select>
 
-      {datos.rol === 'Residente' && (
+      {datos.rol === '3' && (
         <>
           <label htmlFor="apartamento">Apartamento</label>
           <input

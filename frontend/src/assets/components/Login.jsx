@@ -1,16 +1,34 @@
 import React, { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import "./Login.css";
 
 function Login() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
 
-    console.log("Email:", email);
-    console.log("Password:", password);
+    try {
+      const respuesta = await axios.post(
+        "http://localhost:3000/login",
+        { email, password },
+        { withCredentials: true }
+      );
+      console.log("Sesión iniciada:", respuesta.data);
+      navigate("/crear-usuario");
+    } catch (err) {
+      if (err.response?.status === 401) {
+        setError("Correo o contraseña incorrectos");
+      } else {
+        setError("No se pudo conectar con el servidor");
+      }
+    }
   };
 
   return (
@@ -23,6 +41,8 @@ function Login() {
         <p className="login-subtitle">
           Ingresa tus datos para continuar
         </p>
+
+        {error && <p className="login-error">{error}</p>}
 
         <form onSubmit={handleSubmit}>
 
@@ -69,4 +89,3 @@ function Login() {
 }
 
 export default Login;
-
