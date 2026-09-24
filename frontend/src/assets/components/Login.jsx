@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 import "./Login.css";
 
 function Login() {
@@ -9,6 +10,7 @@ function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { cargarUsuario } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,7 +23,8 @@ function Login() {
         { withCredentials: true }
       );
       console.log("Sesión iniciada:", respuesta.data);
-      navigate("/crear-usuario");
+      await cargarUsuario();
+      navigate("/dashboard");
     } catch (err) {
       if (err.response?.status === 401) {
         setError("Correo o contraseña incorrectos");

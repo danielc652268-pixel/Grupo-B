@@ -1,0 +1,31 @@
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  border-bottom: 1px solid #ddd;
+  font-family: sans-serif;
+}
+
+.dashboard-nav {
+  display: flex;
+  gap: 12px;
+}
+
+.dashboard-nav button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  background: #1f6feb;
+  color: #fff;
+  cursor: pointer;
+}
+
+.logout-btn {
+  background: #6b7280 !important;
+}
+
+.dashboard-content {
+  padding: 24px;
+  font-family: sans-serif;
+}

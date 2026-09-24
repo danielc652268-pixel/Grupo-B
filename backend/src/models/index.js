@@ -67,7 +67,6 @@ const overDueMaintenance = (estado, callback) => {
 }
 
 
-
 module.exports = ({
     postClient,
     getUser,
