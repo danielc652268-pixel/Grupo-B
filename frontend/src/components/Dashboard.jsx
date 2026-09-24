@@ -1,5 +1,9 @@
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
+import Sidebar from './Sidebar'
+import FormularioUsuario from './FormularioUsuario'
+import FormularioResidencialyEdificios from './FormularioResidencialyEdificios'
 import './Dashboard.css'
 
 const NOMBRES_ROL = {
@@ -8,9 +12,16 @@ const NOMBRES_ROL = {
   3: 'Residente',
 }
 
+const TITULOS_VISTA = {
+  inicio: 'Inicio',
+  'crear-usuario': 'Crear usuario',
+  residencial: 'Residencial / Edificios',
+}
+
 export default function Dashboard() {
   const { usuario, cerrarSesion } = useAuth()
   const navigate = useNavigate()
+  const [vistaActiva, setVistaActiva] = useState('inicio')
 
   const handleLogout = async () => {
     await cerrarSesion()
@@ -20,26 +31,26 @@ export default function Dashboard() {
   const rol = usuario?.role
 
   return (
-    <div className="dashboard">
-      <header className="dashboard-header">
-        <h1>Panel {NOMBRES_ROL[rol] || ''}</h1>
+    <div className="layout">
+      <Sidebar
+        rol={rol}
+        vistaActiva={vistaActiva}
+        onSeleccionar={setVistaActiva}
+        onCerrarSesion={handleLogout}
+      />
 
-        <nav className="dashboard-nav">
-          {rol === 1 && (
-            <button onClick={() => navigate('/crear-usuario')}>
-              Crear usuario
-            </button>
-          )}
+      <div className="layout-main">
+        <header className="layout-header">
+          <h1>{TITULOS_VISTA[vistaActiva]}</h1>
+          <span className="layout-header-rol">{NOMBRES_ROL[rol] || ''}</span>
+        </header>
 
-          <button onClick={handleLogout} className="logout-btn">
-            Cerrar sesión
-          </button>
-        </nav>
-      </header>
-
-      <main className="dashboard-content">
-        <p>Bienvenido, {usuario?.username}</p>
-      </main>
+        <main className="layout-content">
+          {vistaActiva === 'inicio' && <p>Bienvenido, {usuario?.username}</p>}
+          {vistaActiva === 'crear-usuario' && rol === 1 && <FormularioUsuario />}
+          {vistaActiva === 'residencial' && rol === 1 && <FormularioResidencialyEdificios />}
+        </main>
+      </div>
     </div>
   )
 }

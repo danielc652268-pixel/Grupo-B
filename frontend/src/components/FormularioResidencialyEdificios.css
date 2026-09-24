@@ -1,0 +1,130 @@
+.form-residencial-container {
+    text-align: center;
+    margin: 20px;
+}
+
+.btn-abrir-residencial {
+    padding: 12px 24px;
+    background-color: #1f6feb;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    box-shadow: 0 4px 6px rgba(79, 70, 229, 0.3);
+    transition: all 0.3s;
+}
+
+.btn-abrir-residencial:hover {
+    background-color: #1a5fd0;
+    transform: translateY(-2px);
+}
+
+.modal-overlay-residencial {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(1px);
+}
+
+.modal-contenido-residencial {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    color: #333333;
+    font-family: system-ui, -apple-system, sans-serif;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-contenido-residencial h2 {
+    margin-top: 0;
+    margin-bottom: 25px;
+    color: #111827;
+    text-align: center;
+    font-weight: bold;
+}
+
+.grupo-input-residencial {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.grupo-input-residencial label {
+    margin-bottom: 6px;
+    font-weight: 600;
+    font-size: 14px;
+    color: #374151;
+}
+
+.grupo-input-residencial input,
+.grupo-input-residencial select {
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    background-color: #f9fafb;
+    color: #111827;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.grupo-input-residencial input:focus,
+.grupo-input-residencial select:focus {
+    border-color: #4f46e5;
+}
+
+.botones-accion-residencial {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 25px;
+}
+
+.btn-guardar-residencial {
+    padding: 12px 20px;
+    background-color: #10b981;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 15px;
+    flex: 1;
+    margin-right: 10px;
+    transition: background-color 0.2s;
+}
+
+.btn-guardar-residencial:hover {
+    background-color: #059669;
+}
+
+.btn-cancelar-residencial {
+    padding: 12px 20px;
+    background-color: #ef4444;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 15px;
+    flex: 1;
+    transition: background-color 0.2s;
+}
+
+.btn-cancelar-residencial:hover {
+    background-color: #dc2626;
+}
+

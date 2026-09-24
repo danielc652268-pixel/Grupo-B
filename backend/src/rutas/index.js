@@ -4,6 +4,7 @@ const models = require('../models/index')
 const { verifyToken, SECRET } = require("../middleware/jwt.js")
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
+const residencialController = require('../controllers/residencial.controller')
 
 route.get("/test", verifyToken, (req, res) => {
 
@@ -140,6 +141,15 @@ route.post("/maintenance", verifyToken, async (req, res) => {
 
     })
 })
+
+route.post("/residenciales", verifyToken, (req, res, next) => {
+    if (req.user.role !== 1) {
+        return res.status(403).send({ error: "No tienes permiso para crear residenciales" })
+    }
+    next()
+}, residencialController.crearResidencial)
+
+route.get("/residenciales", verifyToken, residencialController.obtenerResidenciales)
 
 route.get("/me", verifyToken, (req, res) => {
     res.status(200).send(req.user)
