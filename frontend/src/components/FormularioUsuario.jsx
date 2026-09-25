@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import axios from 'axios'
 import './FormularioUsuario.css'
 
@@ -19,8 +19,24 @@ const DATOS_VACIOS = {
 export default function FormularioUsuario({ onGuardado }) {
   const [isOpen, setIsOpen] = useState(false)
   const [datos, setDatos] = useState(DATOS_VACIOS)
+  const [residenciales, setResidenciales] = useState([])
   const [error, setError] = useState('')
   const [enviando, setEnviando] = useState(false)
+
+  useEffect(() => {
+    const cargarResidenciales = async () => {
+      try {
+        const respuesta = await axios.get('http://localhost:3000/residenciales', {
+          withCredentials: true,
+        })
+        setResidenciales(respuesta.data)
+      } catch (err) {
+        console.log('No se pudo cargar la lista de residenciales', err)
+      }
+    }
+
+    cargarResidenciales()
+  }, [])
 
   const manejarCambio = (e) => {
     const { name, value } = e.target
@@ -147,16 +163,21 @@ export default function FormularioUsuario({ onGuardado }) {
 
               {datos.rol === '3' && (
                 <div className="grupo-input-usuario">
-                  <label htmlFor="apartamento">Apartamento:</label>
-                  <input
+                  <label htmlFor="apartamento">Residencial / Edificio:</label>
+                  <select
                     id="apartamento"
                     name="apartamento"
-                    type="text"
-                    placeholder="Ej: A-101"
                     value={datos.apartamento}
                     onChange={manejarCambio}
                     required
-                  />
+                  >
+                    <option value="">Selecciona un residencial</option>
+                    {residenciales.map((residencial) => (
+                      <option key={residencial.id} value={residencial.id}>
+                        {residencial.nombre}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               )}
 
