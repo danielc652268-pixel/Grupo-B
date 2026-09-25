@@ -11,7 +11,7 @@ const crear = (datos, callback) => {
 }
 
 const listar = (callback) => {
-    const sql = "SELECT * FROM residenciales ORDER BY created_at DESC"
+    const sql = "SELECT * FROM residenciales ORDER BY id DESC"
 
     db.query(sql, callback)
 }

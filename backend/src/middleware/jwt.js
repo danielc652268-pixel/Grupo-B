@@ -14,6 +14,7 @@ const verifyToken = (req, res, next) => {
 
     jwt.verify(token, SECRET, (error, decode) => {
         if (error) {
+             console.log("Error verificando token:", error.message)
             return res.status(401).send("error with the Token")
         }
 

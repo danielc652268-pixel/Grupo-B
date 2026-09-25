@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import axios from 'axios'
 import './FormularioUsuario.css'
 
@@ -16,8 +16,24 @@ export default function FormularioUsuario() {
     rol: '',
     apartamento: '',
   })
+  const [residenciales, setResidenciales] = useState([])
   const [mensaje, setMensaje] = useState('')
   const [error, setError] = useState('')
+
+  useEffect(() => {
+    const cargarResidenciales = async () => {
+      try {
+        const respuesta = await axios.get('http://localhost:3000/residenciales', {
+          withCredentials: true,
+        })
+        setResidenciales(respuesta.data)
+      } catch (err) {
+        console.log('No se pudo cargar la lista de residenciales', err)
+      }
+    }
+
+    cargarResidenciales()
+  }, [])
 
   const manejarCambio = (e) => {
     const { name, value } = e.target
@@ -41,7 +57,7 @@ export default function FormularioUsuario() {
         email: datos.correo,
         password: datos.contrasena,
         role_id: Number(datos.rol),
-      })
+      }, { withCredentials: true })
       setMensaje('Usuario creado correctamente')
       setDatos({ nombre: '', correo: '', contrasena: '', rol: '', apartamento: '' })
     } catch (err) {
@@ -111,16 +127,21 @@ export default function FormularioUsuario() {
 
       {datos.rol === '3' && (
         <>
-          <label htmlFor="apartamento">Apartamento</label>
-          <input
+          <label htmlFor="apartamento">Residencial / Edificio</label>
+          <select
             id="apartamento"
             name="apartamento"
-            type="text"
-            placeholder="Ej: A-101"
             value={datos.apartamento}
             onChange={manejarCambio}
             required
-          />
+          >
+            <option value="">Selecciona un residencial</option>
+            {residenciales.map((residencial) => (
+              <option key={residencial.id} value={residencial.id}>
+                {residencial.nombre}
+              </option>
+            ))}
+          </select>
         </>
       )}
 
