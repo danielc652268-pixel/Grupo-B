@@ -11,6 +11,7 @@ const SECCIONES = [
     items: [
       { id: 'crear-usuario', etiqueta: 'Crear usuario' },
       { id: 'residencial', etiqueta: 'Residencial / Edificios' },
+      { id: 'apartamento-casa', etiqueta: 'Apartamentos / Casas' },
     ],
   },
 ]

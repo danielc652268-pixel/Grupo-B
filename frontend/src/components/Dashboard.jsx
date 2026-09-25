@@ -4,10 +4,11 @@ import { useAuth } from '../context/AuthContext'
 import Sidebar from './Sidebar'
 import PanelUsuarios from './PanelUsuarios'
 import PanelResidenciales from './PanelResidenciales'
+import PanelApartamentoCasa from './PanelApartamentoCasa'
 import './Dashboard.css'
 
 const NOMBRES_ROL = {
-  1: 'Administrador',
+  1: 'ADMIN',
   2: 'Técnico',
   3: 'Residente',
 }
@@ -16,6 +17,7 @@ const TITULOS_VISTA = {
   inicio: 'Inicio',
   'crear-usuario': 'Crear usuario',
   residencial: 'Residencial / Edificios',
+  'apartamento-casa': 'Apartamento / Casa',
 }
 
 export default function Dashboard() {
@@ -49,6 +51,7 @@ export default function Dashboard() {
           {vistaActiva === 'inicio' && <p>Bienvenido, {usuario?.username}</p>}
           {vistaActiva === 'crear-usuario' && rol === 1 && <PanelUsuarios />}
           {vistaActiva === 'residencial' && rol === 1 && <PanelResidenciales />}
+          {vistaActiva === 'apartamento-casa' && rol === 1 && <PanelApartamentoCasa />}
         </main>
       </div>
     </div>

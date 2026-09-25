@@ -6,6 +6,7 @@ const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 const residencialController = require('../controllers/residencial.controller')
 const usuarioController = require('../controllers/usuario.controller')
+const apartamentoCasaController = require('../controllers/apartamento_casa.controller')
 
 route.get("/test", verifyToken, (req, res) => {
 
@@ -165,6 +166,36 @@ route.patch("/residenciales/:id/desactivar", verifyToken, (req, res, next) => {
     }
     next()
 }, residencialController.desactivarResidencial)
+
+route.post("/apartamento", verifyToken, (req, res, next) => {
+    if (req.user.role !== 1) {
+        return res.status(403).send({ error: "No tienes permiso para crear apartamentos/casas" })
+    }
+    next()
+}, apartamentoCasaController.crearApartamento)
+
+route.get("/apartamento", verifyToken, apartamentoCasaController.obtenerApartamentos)
+
+route.put("/apartamento/:id", verifyToken, (req, res, next) => {
+    if (req.user.role !== 1) {
+        return res.status(403).send({ error: "No tienes permiso para editar apartamentos/casas" })
+    }
+    next()
+}, apartamentoCasaController.actualizarApartamento)
+
+route.patch("/apartamento/:id/desactivar", verifyToken, (req, res, next) => {
+    if (req.user.role !== 1) {
+        return res.status(403).send({ error: "No tienes permiso para desactivar apartamentos/casas" })
+    }
+    next()
+}, apartamentoCasaController.desactivarApartamento)
+
+route.delete("/apartamento/:id", verifyToken, (req, res, next) => {
+    if (req.user.role !== 1) {
+        return res.status(403).send({ error: "No tienes permiso para eliminar apartamentos/casas" })
+    }
+    next()
+}, apartamentoCasaController.eliminarApartamento)
 
 route.get("/usuarios", verifyToken, (req, res, next) => {
     if (req.user.role !== 1) {

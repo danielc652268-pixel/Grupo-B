@@ -32,9 +32,31 @@ const desactivar = (id, callback) => {
     db.query(sql, [id], callback)
 }
 
+const listarEdificios = (callback) => {
+    const sql = "SELECT id, residencial_id, nombre FROM edificios ORDER BY id ASC"
+
+    db.query(sql, callback)
+}
+
+const crearEdificios = (residencialId, nombres, callback) => {
+    const sql = "INSERT INTO edificios (residencial_id, nombre) VALUES ?"
+    const valores = nombres.map((nombre) => [residencialId, nombre])
+
+    db.query(sql, [valores], callback)
+}
+
+const eliminarEdificiosPorResidencial = (residencialId, callback) => {
+    const sql = "DELETE FROM edificios WHERE residencial_id = ?"
+
+    db.query(sql, [residencialId], callback)
+}
+
 module.exports = {
     crear,
     listar,
     actualizar,
     desactivar,
+    listarEdificios,
+    crearEdificios,
+    eliminarEdificiosPorResidencial,
 }

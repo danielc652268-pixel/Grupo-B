@@ -61,6 +61,7 @@ export default function TablaResidenciales({ recargar, onEditar }) {
                         <th>Dirección</th>
                         <th>Ciudad</th>
                         <th>Teléfono</th>
+                        <th>Cantidad de Edificios</th>
                         <th>Estado</th>
                         <th>Fecha de registro</th>
                         <th>Acciones</th>
@@ -73,6 +74,7 @@ export default function TablaResidenciales({ recargar, onEditar }) {
                             <td>{residencial.direccion}</td>
                             <td>{residencial.ciudad}</td>
                             <td>{residencial.telefono}</td>
+                            <td>{residencial.cantidad_edificios}</td>
                             <td>
                                 <span
                                     className={`estado-badge estado-${residencial.estado
@@ -107,7 +109,7 @@ export default function TablaResidenciales({ recargar, onEditar }) {
 
                     {residenciales.length === 0 && (
                         <tr>
-                            <td colSpan="7" className="tabla-residenciales-vacio">
+                            <td colSpan="8" className="tabla-residenciales-vacio">
                                 No hay residenciales registrados.
                             </td>
                         </tr>

@@ -8,7 +8,9 @@ const DATOS_VACIOS = {
     ciudad: '',
     telefono: '',
     estado: '',
-    fechaRegistro: ''
+    fechaRegistro: '',
+    cantidadEdificios: 1,
+    edificios: ['']
 };
 
 export default function FormularioResidencialyEdificios({ residencialEditar, onCerrarEdicion, onGuardado }) {
@@ -22,6 +24,9 @@ export default function FormularioResidencialyEdificios({ residencialEditar, onC
 
     useEffect(() => {
         if (residencialEditar) {
+            const cantidadEdificios = residencialEditar.cantidad_edificios || 1;
+            const edificiosExistentes = residencialEditar.edificios || [];
+
             setInfoResidencial({
                 nombre: residencialEditar.nombre || '',
                 direccion: residencialEditar.direccion || '',
@@ -30,7 +35,9 @@ export default function FormularioResidencialyEdificios({ residencialEditar, onC
                 estado: residencialEditar.estado || '',
                 fechaRegistro: residencialEditar.fecha_registro
                     ? String(residencialEditar.fecha_registro).slice(0, 10)
-                    : ''
+                    : '',
+                cantidadEdificios,
+                edificios: Array.from({ length: cantidadEdificios }, (_, i) => edificiosExistentes[i] || '')
             });
             setError('');
         }
@@ -39,6 +46,24 @@ export default function FormularioResidencialyEdificios({ residencialEditar, onC
     const manejoCambio = (e) => {
         const { name, value } = e.target;
         setInfoResidencial({ ...infoResidencial, [name]: value });
+    };
+
+    const manejoCambioCantidadEdificios = (e) => {
+        const cantidadEdificios = Math.max(1, Number(e.target.value) || 1);
+
+        setInfoResidencial((prev) => ({
+            ...prev,
+            cantidadEdificios,
+            edificios: Array.from({ length: cantidadEdificios }, (_, i) => prev.edificios[i] || '')
+        }));
+    };
+
+    const manejoCambioNombreEdificio = (index, value) => {
+        setInfoResidencial((prev) => {
+            const edificios = [...prev.edificios];
+            edificios[index] = value;
+            return { ...prev, edificios };
+        });
     };
 
     const cerrarModal = () => {
@@ -177,6 +202,31 @@ export default function FormularioResidencialyEdificios({ residencialEditar, onC
                                     required
                                 />
                             </div>
+
+                            <div className="grupo-input-residencial">
+                                <label>Cantidad de Edificios:</label>
+                                <input
+                                    type="number"
+                                    name="cantidadEdificios"
+                                    value={infoResidencial.cantidadEdificios}
+                                    onChange={manejoCambioCantidadEdificios}
+                                    min="1"
+                                    required
+                                />
+                            </div>
+
+                            {infoResidencial.edificios.map((nombreEdificio, index) => (
+                                <div className="grupo-input-residencial" key={index}>
+                                    <label>Nombre del Edificio {index + 1}:</label>
+                                    <input
+                                        type="text"
+                                        value={nombreEdificio}
+                                        onChange={(e) => manejoCambioNombreEdificio(index, e.target.value)}
+                                        placeholder={`Ej. Torre ${index + 1}`}
+                                        required
+                                    />
+                                </div>
+                            ))}
 
                             <div className="botones-accion-residencial">
                                 <button type="submit" className="btn-guardar-residencial" disabled={enviando}>
