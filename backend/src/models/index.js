@@ -34,12 +34,12 @@ const logIn = (email, callback) => {
     )
 }
 
-const register = (nombre, email, password, role_id, callback) => {
-    const sql = "INSERT INTO usuarios (nombre, email, password, role_id) VALUES(?,?,?,?)"
+const register = (nombre, email, password, role_id, residencial_id, callback) => {
+    const sql = "INSERT INTO usuarios (nombre, email, password, role_id, residencial_id) VALUES(?,?,?,?,?)"
 
     db.query(
         sql,
-        [nombre, email, password, role_id],
+        [nombre, email, password, role_id, residencial_id || null],
         callback
     )
 }

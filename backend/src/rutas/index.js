@@ -7,6 +7,7 @@ const jwt = require("jsonwebtoken")
 const residencialController = require('../controllers/residencial.controller')
 const usuarioController = require('../controllers/usuario.controller')
 const apartamentoCasaController = require('../controllers/apartamento_casa.controller')
+const reporteController = require('../controllers/reporte.controller')
 
 route.get("/test", verifyToken, (req, res) => {
 
@@ -71,7 +72,7 @@ route.post("/register", verifyToken, (req, res) => {
         return res.status(403).send({ error: "No tienes permiso para crear usuarios" })
     }
 
-    const { nombre, password, email, role_id } = req.body
+    const { nombre, password, email, role_id, residencial_id } = req.body
 
 
     if (!nombre || !password || !email) {
@@ -80,7 +81,7 @@ route.post("/register", verifyToken, (req, res) => {
 
     const validPassword = bcrypt.hashSync(password, 10)
 
-    models.register(nombre, email, validPassword, role_id, (error, results) => {
+        models.register(nombre, email, validPassword, role_id, residencial_id, (error, results) => {
 
         if (error) {
             if (error.code === 'ER_DUP_ENTRY') {
@@ -205,6 +206,7 @@ route.get("/usuarios", verifyToken, (req, res, next) => {
 }, usuarioController.obtenerUsuarios)
 
 route.get("/me", verifyToken, (req, res) => {
+    res.set('Cache-Control', 'no-store')
     res.status(200).send(req.user)
 })
 
@@ -212,5 +214,19 @@ route.post("/logout", (req, res) => {
     res.clearCookie("token")
     res.status(200).send({ message: "Sesión cerrada" })
 })
+
+route.get("/reportes/formulario", verifyToken, (req, res, next) => {
+    if (req.user.role !== 3) {
+        return res.status(403).send({ error: "Solo un residente puede ver este formulario" })
+    }
+    next()
+}, reporteController.obtenerDatosFormulario)
+
+route.post("/reportes", verifyToken, (req, res, next) => {
+    if (req.user.role !== 3) {
+        return res.status(403).send({ error: "Solo un residente puede crear reportes" })
+    }
+    next()
+}, reporteController.crearReporte)
 
 module.exports = route

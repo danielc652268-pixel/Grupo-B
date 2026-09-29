@@ -14,6 +14,11 @@ const SECCIONES = [
       { id: 'apartamento-casa', etiqueta: 'Apartamentos / Casas' },
     ],
   },
+  {
+    titulo: 'Residente',
+    soloRol: 3,
+    items: [{ id: 'reportar-averia', etiqueta: 'Reportar un problema' }],
+  },
 ]
 
 export default function Sidebar({ rol, vistaActiva, onSeleccionar, onCerrarSesion }) {

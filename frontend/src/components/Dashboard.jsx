@@ -5,6 +5,7 @@ import Sidebar from './Sidebar'
 import PanelUsuarios from './PanelUsuarios'
 import PanelResidenciales from './PanelResidenciales'
 import PanelApartamentoCasa from './PanelApartamentoCasa'
+import ReportarAveria from './ReportarAveria'
 import './Dashboard.css'
 
 const NOMBRES_ROL = {
@@ -18,6 +19,7 @@ const TITULOS_VISTA = {
   'crear-usuario': 'Crear usuario',
   residencial: 'Residencial / Edificios',
   'apartamento-casa': 'Apartamento / Casa',
+  'reportar-averia': 'Reportar un problema',
 }
 
 export default function Dashboard() {
@@ -52,6 +54,7 @@ export default function Dashboard() {
           {vistaActiva === 'crear-usuario' && rol === 1 && <PanelUsuarios />}
           {vistaActiva === 'residencial' && rol === 1 && <PanelResidenciales />}
           {vistaActiva === 'apartamento-casa' && rol === 1 && <PanelApartamentoCasa />}
+          {vistaActiva === 'reportar-averia' && rol === 3 && <ReportarAveria />}
         </main>
       </div>
     </div>

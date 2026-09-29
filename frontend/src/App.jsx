@@ -5,6 +5,7 @@ import Dashboard from './components/Dashboard'
 import RutaProtegida from './components/RutaProtegida'
 import AccesoDenegado from './components/AccesoDenegado'
 import { AuthProvider } from './context/AuthContext'
+import ReportarAveria from './components/ReportarAveria'
 
 function App() {
   return (
@@ -27,6 +28,15 @@ function App() {
             element={
               <RutaProtegida rolesPermitidos={[1]}>
                 <FormularioUsuario />
+              </RutaProtegida>
+            }
+          />
+
+          <Route
+            path="/reportar-averia"
+            element={
+              <RutaProtegida rolesPermitidos={[3]}>
+                <ReportarAveria />
               </RutaProtegida>
             }
           />
