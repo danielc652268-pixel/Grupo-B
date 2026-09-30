@@ -14,7 +14,7 @@
 -- credenciales de conexion (DB_HOST, DB_USER, DB_PASSWORD,
 -- DB_NAME=mantenimiento, JWT_SECRET).
 --
--- Actualizado: 2026-09-28 (HU08 - reportes de mantenimiento)
+-- Actualizado: 2026-09-29 (HU11 - asignar tecnico a un reporte)
 -- =========================================================
 
 CREATE DATABASE IF NOT EXISTS mantenimiento DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
@@ -157,7 +157,8 @@ INSERT INTO estados_mantenimiento (id, nombre) VALUES
     (2, 'EN_PROCESO'),
     (3, 'COMPLETADO'),
     (4, 'CANCELADO'),
-    (5, 'PENDIENTE');
+    (5, 'PENDIENTE'),
+    (6, 'ASIGNADO');
 
 -- ---------------------------------------------------------
 -- Tabla: reportes
@@ -165,7 +166,9 @@ INSERT INTO estados_mantenimiento (id, nombre) VALUES
 -- ubicacion es un apartamento propio O un area comun, nunca
 -- ambos (por eso los dos campos son opcionales). El estado
 -- inicial siempre es Pendiente (id 5, ver nota en la tabla
--- estados_mantenimiento).
+-- estados_mantenimiento). `tecnico_id` se llena cuando un
+-- admin asigna un tecnico (rol TECNICO) al reporte, momento en
+-- el que el estado pasa a Asignado (id 6).
 -- ---------------------------------------------------------
 CREATE TABLE reportes (
     id              INT AUTO_INCREMENT PRIMARY KEY,
@@ -175,10 +178,30 @@ CREATE TABLE reportes (
     categoria       ENUM('PLOMERIA', 'ELECTRICIDAD', 'ELEVADOR', 'ESTRUCTURAL', 'OTRO') NOT NULL,
     descripcion     TEXT NOT NULL,
     estado_id       INT NOT NULL DEFAULT 5,
+    tecnico_id      INT DEFAULT NULL,
     fecha_reporte   TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    fecha_programada DATE DEFAULT NULL,
 
     CONSTRAINT fk_reporte_usuario FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
     CONSTRAINT fk_reporte_apartamento FOREIGN KEY (apartamento_id) REFERENCES apartamento_casa(id),
     CONSTRAINT fk_reporte_area FOREIGN KEY (area_comun_id) REFERENCES areas_comunes(id),
-    CONSTRAINT fk_reporte_estado FOREIGN KEY (estado_id) REFERENCES estados_mantenimiento(id)
+    CONSTRAINT fk_reporte_estado FOREIGN KEY (estado_id) REFERENCES estados_mantenimiento(id),
+    CONSTRAINT fk_reporte_tecnico FOREIGN KEY (tecnico_id) REFERENCES usuarios(id)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------
+-- Tabla: tecnicos
+-- Datos adicionales que solo aplican a usuarios con rol
+-- Tecnico (role_id = 2), ligados 1 a 1 a `usuarios`. La
+-- especialidad usa el mismo catalogo de categorias que
+-- `reportes.categoria`, para poder filtrar tecnicos por la
+-- categoria del reporte al asignar (HU11).
+-- ---------------------------------------------------------
+-- Datos adicionales de los usuarios con rol Tecnico (role_id = 2)
+CREATE TABLE IF NOT EXISTS tecnicos (
+    id             INT PRIMARY KEY,
+    especialidad   ENUM('PLOMERIA', 'ELECTRICIDAD', 'ELEVADOR', 'ESTRUCTURAL', 'GENERAL') NOT NULL,
+    telefono       VARCHAR(15) DEFAULT NULL,
+
+    CONSTRAINT fk_tecnico_usuario FOREIGN KEY (id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB;

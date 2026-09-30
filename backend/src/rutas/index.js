@@ -2,12 +2,14 @@ const express = require("express");
 const route = express.Router()
 const models = require('../models/index')
 const { verifyToken, SECRET } = require("../middleware/jwt.js")
+const { verificarRol } = require("../middleware/verificarRol.js")
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 const residencialController = require('../controllers/residencial.controller')
 const usuarioController = require('../controllers/usuario.controller')
 const apartamentoCasaController = require('../controllers/apartamento_casa.controller')
 const reporteController = require('../controllers/reporte.controller')
+const tecnicoController = require('../controllers/tecnico.controller')
 
 route.get("/test", verifyToken, (req, res) => {
 
@@ -228,5 +230,13 @@ route.post("/reportes", verifyToken, (req, res, next) => {
     }
     next()
 }, reporteController.crearReporte)
+
+route.get("/reportes/pendientes", verifyToken, verificarRol(1), reporteController.obtenerReportesPendientes)
+
+route.get("/reportes/asignados", verifyToken, verificarRol(1), reporteController.obtenerReportesAsignados)
+
+route.patch("/reportes/:id/asignar", verifyToken, verificarRol(1), reporteController.asignarTecnico)
+
+route.get("/tecnicos", verifyToken, verificarRol(1), tecnicoController.obtenerTecnicos)
 
 module.exports = route

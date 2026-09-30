@@ -1,0 +1,109 @@
+.asignar-reporte-container {
+  max-width: 900px;
+  margin: 24px auto;
+  padding: 28px;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  font-family: sans-serif;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.asignar-reporte-container h2 {
+  margin: 0 0 16px;
+  font-size: 22px;
+  color: #1a202c;
+}
+
+.asignar-reporte-tabla {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.asignar-reporte-tabla thead {
+  background-color: #1565c0;
+}
+
+.asignar-reporte-tabla th {
+  color: #fff;
+  text-align: left;
+  padding: 12px 8px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.asignar-reporte-tabla td {
+  padding: 12px 8px;
+  border-bottom: 1px solid #e5e7eb;
+  color: #1a202c;
+  vertical-align: middle;
+}
+
+/* La descripción no debe ensanchar la tabla: se limita y hace salto de línea */
+.asignar-reporte-tabla td:nth-child(5) {
+  max-width: 180px;
+  overflow-wrap: anywhere;
+}
+
+.asignar-reporte-tabla tbody tr:hover {
+  background-color: #eaf2ff;
+}
+
+.asignar-reporte-select {
+  padding: 8px 10px;
+  border: 1px solid #cbd5e0;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: inherit;
+  min-width: 140px;
+  max-width: 100%;
+}
+
+.asignar-reporte-fecha {
+  padding: 7px 8px;
+  border: 1px solid #cbd5e0;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: inherit;
+}
+
+.asignar-reporte-boton {
+  margin-left: 8px;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  background: #1f6feb;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.asignar-reporte-boton:hover:not(:disabled) {
+  background: #1a5fd0;
+}
+
+.asignar-reporte-boton:disabled {
+  background: #93b6f0;
+  cursor: not-allowed;
+}
+
+.asignar-reporte-vacio {
+  text-align: center;
+  color: #6b7280;
+  padding: 24px;
+}
+
+.asignar-reporte-mensaje {
+  margin: 0 0 14px;
+}
+
+.asignar-reporte-exito {
+  color: #059669;
+}
+
+.asignar-reporte-error {
+  color: #d32f2f;
+}

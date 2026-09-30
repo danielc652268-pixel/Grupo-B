@@ -10,8 +10,9 @@ const SECCIONES = [
     soloRol: 1,
     items: [
       { id: 'crear-usuario', etiqueta: 'Crear usuario' },
-      { id: 'residencial', etiqueta: 'Residencial / Edificios' },
-      { id: 'apartamento-casa', etiqueta: 'Apartamentos / Casas' },
+      { id: 'residencial', etiqueta: 'Registrar Residencial o Edificios' },
+      { id: 'apartamento-casa', etiqueta: 'Registrar Apartamentos o Casas' },
+      { id: 'asignar-reporte', etiqueta: 'Reportes' },
     ],
   },
   {

@@ -5,6 +5,7 @@ import Sidebar from './Sidebar'
 import PanelUsuarios from './PanelUsuarios'
 import PanelResidenciales from './PanelResidenciales'
 import PanelApartamentoCasa from './PanelApartamentoCasa'
+import PanelAsignarReporte from './PanelAsignarReporte'
 import ReportarAveria from './ReportarAveria'
 import './Dashboard.css'
 
@@ -19,6 +20,7 @@ const TITULOS_VISTA = {
   'crear-usuario': 'Crear usuario',
   residencial: 'Residencial / Edificios',
   'apartamento-casa': 'Apartamento / Casa',
+  'asignar-reporte': 'Asignar reportes',
   'reportar-averia': 'Reportar un problema',
 }
 
@@ -54,6 +56,7 @@ export default function Dashboard() {
           {vistaActiva === 'crear-usuario' && rol === 1 && <PanelUsuarios />}
           {vistaActiva === 'residencial' && rol === 1 && <PanelResidenciales />}
           {vistaActiva === 'apartamento-casa' && rol === 1 && <PanelApartamentoCasa />}
+          {vistaActiva === 'asignar-reporte' && rol === 1 && <PanelAsignarReporte />}
           {vistaActiva === 'reportar-averia' && rol === 3 && <ReportarAveria />}
         </main>
       </div>

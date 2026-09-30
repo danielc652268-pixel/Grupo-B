@@ -1,0 +1,48 @@
+.boton-verReporte,
+.boton-editar,
+.boton-eliminar {
+  display: inline-block;
+  padding: 4px 8px;
+  margin: 0 3px 3px 0;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.boton-eliminar {
+  margin-right: 0;
+}
+
+.boton-verReporte {
+  background-color: #2563eb;
+}
+
+.boton-verReporte:hover {
+  background-color: #1d4ed8;
+}
+
+.boton-editar {
+  background-color: #f59e0b;
+}
+
+.boton-editar:hover {
+  background-color: #d97706;
+}
+
+.boton-eliminar {
+  background-color: #dc2626;
+}
+
+.boton-eliminar:hover {
+  background-color: #b91c1c;
+}
+
+.boton-verReporte:active,
+.boton-editar:active,
+.boton-eliminar:active {
+  transform: scale(0.96);
+}
