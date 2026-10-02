@@ -8,6 +8,7 @@ import PanelApartamentoCasa from './PanelApartamentoCasa'
 import PanelAsignarReporte from './PanelAsignarReporte'
 import ReportarAveria from './ReportarAveria'
 import './Dashboard.css'
+import Historial from './Historial'
 
 const NOMBRES_ROL = {
   1: 'ADMIN',
@@ -53,12 +54,18 @@ export default function Dashboard() {
         </header>
 
         <main className="layout-content">
-          {vistaActiva === 'inicio' && <p>Bienvenido, {usuario?.username}</p>}
+          {vistaActiva === 'inicio' && (
+            <>
+              <p>Bienvenido, {usuario?.username}</p>
+              <Historial />
+            </>
+          )}
           {vistaActiva === 'crear-usuario' && rol === 1 && <PanelUsuarios />}
           {vistaActiva === 'residencial' && rol === 1 && <PanelResidenciales />}
           {vistaActiva === 'apartamento-casa' && rol === 1 && <PanelApartamentoCasa />}
           {vistaActiva === 'asignar-reporte' && rol === 1 && <PanelAsignarReporte />}
           {vistaActiva === 'reportar-averia' && rol === 3 && <ReportarAveria />}
+          
         </main>
       </div>
     </div>
