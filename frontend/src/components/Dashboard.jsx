@@ -49,6 +49,7 @@ export default function Dashboard() {
         <header className="layout-header">
           <h1>{TITULOS_VISTA[vistaActiva]}</h1>
           <span className="layout-header-rol">{NOMBRES_ROL[rol] || ''}</span>
+          
         </header>
 
         <main className="layout-content">
