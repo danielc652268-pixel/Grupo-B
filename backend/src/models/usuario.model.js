@@ -11,6 +11,17 @@ const listar = (callback) => {
     db.query(sql, callback)
 }
 
+const propietarios = (callback) => {
+    
+    const sql = "Select u.nombre, r.nombre as res_nombre, u.email, u.estado from usuarios as u INNER JOIN residenciales as r on r.id = u.residencial_id"
+    
+    db.query(
+        sql,
+        callback
+    )
+}
+
 module.exports = {
     listar,
+    propietarios
 }
