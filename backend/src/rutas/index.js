@@ -117,11 +117,77 @@ route.post("/", (req, res) => {
 
 
 
-route.get("/maintenance", (req, res) => {
+route.get("/maintenance", verifyToken, (req, res) => {
 
+    if (req.user.role !== 2) {
+        return res.status(403).send({ error: "No tienes permiso para ver los mantenimientos" })
+    }
+
+    models.mantenimientosDeTecnico(req.user.id, (error, results) => {
+        if (error) {
+            console.log(error)
+            return res.status(500).send({ error: "error obteniendo datos" })
+        }
+
+        res.status(200).send(results)
+    })
 })
 
 
+
+const ESTADOS_PERMITIDOS_TECNICO = ['EN_PROCESO', 'COMPLETADO']
+
+route.patch("/maintenance/:id", verifyToken, async (req, res) => {
+
+    if (req.user.role !== 2) {
+        return res.status(403).send({ error: "No tienes permiso para actualizar mantenimientos" })
+    }
+
+    const estado = req.body.estado || null
+    const comentario = (req.body.comentario || "").trim()
+
+    if (estado && !ESTADOS_PERMITIDOS_TECNICO.includes(estado)) {
+        return res.status(400).send({ error: "Estado no permitido" })
+    }
+    if (!estado && !comentario) {
+        return res.status(400).send({ error: "Agrega un comentario o cambia el estado" })
+    }
+    if (comentario.length > 1000) {
+        return res.status(400).send({ error: "El comentario no puede superar 1000 caracteres" })
+    }
+
+    try {
+        const resultado = await models.registrarProgreso(req.params.id, req.user.id, estado, comentario)
+
+        if (resultado.error === 'NO_ENCONTRADO') {
+            return res.status(404).send({ error: "Reporte no encontrado o no asignado a ti" })
+        }
+        if (resultado.error === 'CERRADO') {
+            return res.status(409).send({ error: "El reporte ya está cerrado" })
+        }
+
+        res.status(200).send({ mensaje: "Reporte actualizado" })
+    } catch (error) {
+        console.log(error)
+        res.status(500).send({ error: "Error actualizando el reporte" })
+    }
+})
+
+route.get("/maintenance/:id/comentarios", verifyToken, (req, res) => {
+
+    if (req.user.role !== 2) {
+        return res.status(403).send({ error: "No tienes permiso para ver los comentarios" })
+    }
+
+    models.comentariosDeReporte(req.params.id, req.user.id, (error, results) => {
+        if (error) {
+            console.log(error)
+            return res.status(500).send({ error: "error obteniendo datos" })
+        }
+
+        res.status(200).send(results)
+    })
+})
 
 //login Overdue maintenance
 
@@ -233,7 +299,7 @@ route.post("/reportes", verifyToken, (req, res, next) => {
     next()
 }, reporteController.crearReporte)
 
-route.get("/propietarios", (req, res) => {
+route.get("/propietarios", verifyToken, verificarRol(1), (req, res) => {
     modelpropietario.propietarios((error, resutls) => {
         if(error) {
             return res.status(400).send({error: "error dando propietaios"})
@@ -245,7 +311,7 @@ route.get("/propietarios", (req, res) => {
 
 )
 
-route.get("/mantenimiento", (req, res) => {
+route.get("/mantenimiento", verifyToken, (req, res) => {
     reporteModel.historialMantenimiento((error, results) => {
         if (error) {
             return res.status(400).send({ error: "error dando mantenimientos" })

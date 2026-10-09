@@ -10,6 +10,7 @@ import ReportarAveria from './ReportarAveria'
 import './Dashboard.css'
 import Historial from './Historial'
 import TablaTodosReportes from './TablaTodosReportes'
+import MantenimientoTecnico from './MantenimientoTecnico'
 
 const NOMBRES_ROL = {
   1: 'ADMIN',
@@ -25,6 +26,7 @@ const TITULOS_VISTA = {
   'asignar-reporte': 'Asignar reportes',
   'reportar-averia': 'Reportar un problema',
   'todos-reportes': 'Todos los reportes',
+  'mantenimiento-tecnico': 'Mantenimiento',
 }
 
 export default function Dashboard() {
@@ -68,6 +70,7 @@ export default function Dashboard() {
           {vistaActiva === 'asignar-reporte' && rol === 1 && <PanelAsignarReporte />}
           {vistaActiva === 'reportar-averia' && rol === 3 && <ReportarAveria />}
           {vistaActiva === 'todos-reportes' && rol === 1 && <TablaTodosReportes />}
+          {vistaActiva === 'mantenimiento-tecnico' && rol === 2 && <MantenimientoTecnico />}
           
         </main>
       </div>

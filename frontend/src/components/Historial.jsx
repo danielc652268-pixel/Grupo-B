@@ -1,9 +1,10 @@
 
 import { useEffect, useState } from "react";
+import { useAuth } from "../context/AuthContext";
 import "./Historial.css";
 
 const URL_PROPIETARIOS = "http://localhost:3000/propietarios";
-const URL_MANTENIMIENTOS = "http://localhost:3000/maintenance";
+const URL_MANTENIMIENTOS = "http://localhost:3000/mantenimiento";
 
 
 
@@ -17,11 +18,19 @@ const ESTADOS_MANTENIMIENTO = {
 };
 
 const ICONOS_TIPO = {
-  Ascensor: "🛗",
-  Piscina: "🏊",
-  Eléctrico: "💡",
-  Pintura: "🎨",
-  Plomería: "🚰",
+  PLOMERIA: "🚰",
+  ELECTRICIDAD: "💡",
+  ELEVADOR: "🛗",
+  ESTRUCTURAL: "🏗️",
+  OTRO: "🔧",
+};
+
+const NOMBRES_TIPO = {
+  PLOMERIA: "Plomería",
+  ELECTRICIDAD: "Electricidad",
+  ELEVADOR: "Elevador",
+  ESTRUCTURAL: "Estructural",
+  OTRO: "Otro",
 };
 
 const COLORES_AVATAR = [
@@ -67,7 +76,7 @@ function useDatos(url) {
       try {
         console.log("URL:", url);
 
-        const respuesta = await fetch(url);
+        const respuesta = await fetch(url, { credentials: "include" });
 
         console.log("STATUS:", respuesta.status);
 
@@ -312,7 +321,7 @@ function TablaMantenimiento() {
 
               {datos.length === 0 && (
                 <tr>
-                  <td colSpan="6" className="vacio">
+                  <td colSpan="4" className="vacio">
                     Aún no hay mantenimientos registrados.
                   </td>
                 </tr>
@@ -335,7 +344,7 @@ function TablaMantenimiento() {
                           {ICONOS_TIPO[m.tipo] || "🔧"}
                         </span>
 
-                        {m.tipo}
+                        {NOMBRES_TIPO[m.tipo] || m.tipo}
 
                       </div>
 
@@ -382,13 +391,14 @@ function TablaMantenimiento() {
 
 
 export default function Historial() {
+  const { usuario } = useAuth();
 
   return (
     <main className="historial">
 
       <h1>Historial</h1>
 
-      <TablaPropietarios />
+      {usuario?.role === 1 && <TablaPropietarios />}
 
       <TablaMantenimiento />
 

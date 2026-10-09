@@ -21,6 +21,11 @@ const SECCIONES = [
     soloRol: 3,
     items: [{ id: 'reportar-averia', etiqueta: 'Reportar un problema' }],
   },
+  {
+    titulo: 'Técnico',
+    soloRol: 2,
+    items: [{ id: 'mantenimiento-tecnico', etiqueta: 'Mantenimiento' }],
+  },
 ]
 
 export default function Sidebar({ rol, vistaActiva, onSeleccionar, onCerrarSesion }) {

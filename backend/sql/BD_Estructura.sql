@@ -205,3 +205,23 @@ CREATE TABLE IF NOT EXISTS tecnicos (
 
     CONSTRAINT fk_tecnico_usuario FOREIGN KEY (id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------
+-- Tabla: reporte_comentarios
+-- Historial de avances que el tecnico registra sobre un
+-- reporte asignado. `estado_id` guarda el estado del reporte
+-- en el momento del comentario (el nuevo estado si el tecnico
+-- lo cambio en esa actualizacion).
+-- ---------------------------------------------------------
+CREATE TABLE IF NOT EXISTS reporte_comentarios (
+    id          INT AUTO_INCREMENT PRIMARY KEY,
+    reporte_id  INT NOT NULL,
+    usuario_id  INT NOT NULL,
+    comentario  TEXT DEFAULT NULL,
+    estado_id   INT NOT NULL,
+    created_at  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_comentario_reporte FOREIGN KEY (reporte_id) REFERENCES reportes(id),
+    CONSTRAINT fk_comentario_usuario FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
+    CONSTRAINT fk_comentario_estado FOREIGN KEY (estado_id) REFERENCES estados_mantenimiento(id)
+) ENGINE=InnoDB;
