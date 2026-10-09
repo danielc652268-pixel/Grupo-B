@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import "./Historial.css";
 
 const URL_PROPIETARIOS = "http://localhost:3000/propietarios";
-const URL_MANTENIMIENTOS = "http://localhost:3000/mantenimiento";
+const URL_MANTENIMIENTOS = "http://localhost:3000/maintenance";
 
 
 
