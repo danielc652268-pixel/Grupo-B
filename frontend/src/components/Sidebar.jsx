@@ -13,6 +13,7 @@ const SECCIONES = [
       { id: 'residencial', etiqueta: 'Registrar Residencial o Edificios' },
       { id: 'apartamento-casa', etiqueta: 'Registrar Apartamentos o Casas' },
       { id: 'asignar-reporte', etiqueta: 'Reportes' },
+      { id: 'todos-reportes', etiqueta: 'Todos los reportes' },
     ],
   },
   {

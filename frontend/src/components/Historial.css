@@ -195,3 +195,5 @@ tbody tr:hover {
 .etiqueta.proceso    { background: #fef3c7; color: #b45309; }
 .etiqueta.completado { background: #dcfce7; color: #15803d; }
 .etiqueta.cancelado  { background: #fee2e2; color: #b91c1c; }
+.etiqueta.pendiente  { background: #f3f4f6; color: #4b5563; }
+.etiqueta.asignado   { background: #e0f2fe; color: #0369a1; }

@@ -12,6 +12,8 @@ const ESTADOS_MANTENIMIENTO = {
   2: { texto: "En proceso", clase: "proceso" },
   3: { texto: "Completado", clase: "completado" },
   4: { texto: "Cancelado", clase: "cancelado" },
+  5: { texto: "Pendiente", clase: "pendiente" },
+  6: { texto: "Asignado", clase: "asignado" },
 };
 
 const ICONOS_TIPO = {
@@ -355,9 +357,7 @@ function TablaMantenimiento() {
                           estado ? estado.clase : ""
                         }`}
                       >
-                        {m.estado == 3
-                          ? programado
-                          : "Desconocido"}
+                        {estado ? estado.texto : "Desconocido"}
                       </span>
 
                     </td>

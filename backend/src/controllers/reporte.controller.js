@@ -50,10 +50,21 @@ const obtenerReportesAsignados = async (req, res) => {
     }
 }
 
+const obtenerTodosLosReportes = async (req, res) => {
+    try {
+        const { residencial_id, estado, tecnico_id } = req.query
+        const resultado = await reporteService.listarTodosLosReportes({ residencial_id, estado, tecnico_id })
+        res.status(200).send(resultado)
+    } catch (error) {
+        res.status(error.status || 500).send({ error: error.message || "Error obteniendo los reportes" })
+    }
+}
+
 module.exports = {
     obtenerDatosFormulario,
     crearReporte,
     obtenerReportesPendientes,
     asignarTecnico,
     obtenerReportesAsignados,
+    obtenerTodosLosReportes,
 }

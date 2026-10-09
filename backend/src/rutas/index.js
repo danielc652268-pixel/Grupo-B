@@ -10,7 +10,8 @@ const usuarioController = require('../controllers/usuario.controller')
 const apartamentoCasaController = require('../controllers/apartamento_casa.controller')
 const reporteController = require('../controllers/reporte.controller')
 const tecnicoController = require('../controllers/tecnico.controller')
-const modelpropietario = require("../models/usuario.mode.js")
+const reporteModel = require("../models/reporte.model.js")
+const modelpropietario = require("../models/usuario.model.js")
 
 route.get("/test", verifyToken, (req, res) => {
 
@@ -232,7 +233,7 @@ route.post("/reportes", verifyToken, (req, res, next) => {
     next()
 }, reporteController.crearReporte)
 
-route.post("/propietarios", (req, res) => {
+route.get("/propietarios", (req, res) => {
     modelpropietario.propietarios((error, resutls) => {
         if(error) {
             return res.status(400).send({error: "error dando propietaios"})
@@ -244,6 +245,16 @@ route.post("/propietarios", (req, res) => {
 
 )
 
+route.get("/mantenimiento", (req, res) => {
+    reporteModel.historialMantenimiento((error, results) => {
+        if (error) {
+            return res.status(400).send({ error: "error dando mantenimientos" })
+        }
+
+        return res.status(200).send(results)
+    })
+})
+
 route.get("/reportes/pendientes", verifyToken, verificarRol(1), reporteController.obtenerReportesPendientes)
 
 route.get("/reportes/asignados", verifyToken, verificarRol(1), reporteController.obtenerReportesAsignados)
@@ -251,5 +262,7 @@ route.get("/reportes/asignados", verifyToken, verificarRol(1), reporteController
 route.patch("/reportes/:id/asignar", verifyToken, verificarRol(1), reporteController.asignarTecnico)
 
 route.get("/tecnicos", verifyToken, verificarRol(1), tecnicoController.obtenerTecnicos)
+
+route.get("/reportes", verifyToken, verificarRol(1), reporteController.obtenerTodosLosReportes)
 
 module.exports = route

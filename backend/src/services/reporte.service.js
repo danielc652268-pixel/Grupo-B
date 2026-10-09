@@ -116,6 +116,15 @@ const listarReportesAsignados = () => {
     })
 }
 
+const listarTodosLosReportes = (filtros) => {
+    return new Promise((resolve, reject) => {
+        reporteModel.listarTodos(filtros, (error, results) => {
+            if (error) return reject({ status: 500, message: "Error obteniendo los reportes", error })
+            resolve(results)
+        })
+    })
+}
+
 module.exports = {
     obtenerMiApartamento,
     obtenerResidencialDeUsuario,
@@ -124,4 +133,5 @@ module.exports = {
     listarReportesPendientes,
     asignarTecnico,
     listarReportesAsignados,
+    listarTodosLosReportes,
 }
