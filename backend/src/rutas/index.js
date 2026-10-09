@@ -263,4 +263,6 @@ route.patch("/reportes/:id/asignar", verifyToken, verificarRol(1), reporteContro
 
 route.get("/tecnicos", verifyToken, verificarRol(1), tecnicoController.obtenerTecnicos)
 
+route.get("/reportes", verifyToken, verificarRol(1), reporteController.obtenerTodosLosReportes)
+
 module.exports = route

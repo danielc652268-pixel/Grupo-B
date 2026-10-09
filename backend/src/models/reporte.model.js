@@ -95,6 +95,46 @@ const historialMantenimiento = (callback) => {
     db.query(sql, callback)
 }
 
+const listarTodos = (filtros, callback) => {
+    const condiciones = []
+    const valores = []
+
+    if (filtros.residencial_id) {
+        condiciones.push('res.id = ?')
+        valores.push(filtros.residencial_id)
+    }
+    if (filtros.estado) {
+        condiciones.push('e.nombre = ?')
+        valores.push(filtros.estado)
+    }
+    if (filtros.tecnico_id) {
+        condiciones.push('r.tecnico_id = ?')
+        valores.push(filtros.tecnico_id)
+    }
+
+    const where = condiciones.length ? `WHERE ${condiciones.join(' AND ')}` : ''
+
+    const sql = `
+        SELECT
+            r.id,
+            r.fecha_reporte,
+            res.nombre AS residencial,
+            COALESCE(ac.nombre, areac.nombre) AS ubicacion,
+            t.nombre AS tecnico,
+            e.nombre AS estado
+        FROM reportes r
+        JOIN estados_mantenimiento e ON e.id = r.estado_id
+        LEFT JOIN apartamento_casa ac ON ac.id = r.apartamento_id
+        LEFT JOIN areas_comunes areac ON areac.id = r.area_comun_id
+        LEFT JOIN residenciales res ON res.id = COALESCE(ac.residencial_id, areac.residencial_id)
+        LEFT JOIN usuarios t ON t.id = r.tecnico_id
+        ${where}
+        ORDER BY r.fecha_reporte DESC
+    `
+
+    db.query(sql, valores, callback)
+}
+
 module.exports = {
     crear,
     obtenerMiApartamento,
@@ -104,4 +144,5 @@ module.exports = {
     asignarTecnico,
     listarAsignados,
     historialMantenimiento,
+    listarTodos,
 }

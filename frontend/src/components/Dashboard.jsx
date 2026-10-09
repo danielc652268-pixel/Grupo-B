@@ -9,6 +9,7 @@ import PanelAsignarReporte from './PanelAsignarReporte'
 import ReportarAveria from './ReportarAveria'
 import './Dashboard.css'
 import Historial from './Historial'
+import TablaTodosReportes from './TablaTodosReportes'
 
 const NOMBRES_ROL = {
   1: 'ADMIN',
@@ -23,6 +24,7 @@ const TITULOS_VISTA = {
   'apartamento-casa': 'Apartamento / Casa',
   'asignar-reporte': 'Asignar reportes',
   'reportar-averia': 'Reportar un problema',
+  'todos-reportes': 'Todos los reportes',
 }
 
 export default function Dashboard() {
@@ -65,6 +67,7 @@ export default function Dashboard() {
           {vistaActiva === 'apartamento-casa' && rol === 1 && <PanelApartamentoCasa />}
           {vistaActiva === 'asignar-reporte' && rol === 1 && <PanelAsignarReporte />}
           {vistaActiva === 'reportar-averia' && rol === 3 && <ReportarAveria />}
+          {vistaActiva === 'todos-reportes' && rol === 1 && <TablaTodosReportes />}
           
         </main>
       </div>
