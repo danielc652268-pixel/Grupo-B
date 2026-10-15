@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { avisarExito, avisarError, confirmarAccion } from '../utils/notificaciones';
 import axios from 'axios';
 import './TablaApartamentoCasa.css';
 
@@ -7,6 +8,8 @@ export default function TablaApartamentoCasa({ recargar }) {
     const [apartamentos, setApartamentos] = useState([])
     const [cargando, setCargando] = useState(true)
     const [error, setError] = useState('')
+    
+
 
     const cargarApartamentos = async () => {
         setCargando(true)
@@ -28,16 +31,24 @@ export default function TablaApartamentoCasa({ recargar }) {
         cargarApartamentos()
     }, [recargar])
 
-    const eliminarApartamento = async (id) => {
-        try {
-            await axios.delete(`http://localhost:3000/apartamento/${id}`, {
-                withCredentials: true
-            })
-            alert("Apartamento/Casa eliminado exitosamente")
-            cargarApartamentos()
-        } catch (error) {
-            alert("No se pudo eliminar el apartamento/Casa")
-        }
+
+    const eliminarApartamento = (apartamento) => {
+        confirmarAccion({
+            titulo: `¿Eliminar "${apartamento.nombre} #${apartamento.numero_apartamento}"?`,
+            descripcion: 'Esta acción no se puede deshacer.',
+            textoBoton: 'Eliminar',
+            onConfirmar: async () => {
+                try {
+                    await axios.delete(`http://localhost:3000/apartamento/${apartamento.id}`, {
+                        withCredentials: true
+                    })
+                    avisarExito("Apartamento/Casa eliminado exitosamente")
+                    cargarApartamentos()
+                } catch (error) {
+                    avisarError("No se pudo eliminar el apartamento/Casa")
+                }
+            },
+        })
     }
 
     return (
@@ -63,7 +74,7 @@ export default function TablaApartamentoCasa({ recargar }) {
                             <td>{apartamento.residente_nombre || 'Sin asignar'}</td>
                             <td>
                                 <button
-                                    onClick={() => eliminarApartamento(apartamento.id)}
+                                    onClick={() => eliminarApartamento(apartamento)}
                                     className="btn-eliminar-apartamento"
                                 >
                                     Eliminar

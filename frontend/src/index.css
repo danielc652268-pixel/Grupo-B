@@ -1,0 +1,29 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+}
+
+.toast-titulo-error {
+  color: #991b1b !important;
+}
+
+.toast-texto-error {
+  color: #b91c1c !important;
+}
+
+.toast-titulo-exito {
+  color: #065f46 !important;
+}
+
+.toast-texto-exito {
+  color: #047857 !important;
+}
+
+[data-sileo-viewport] {
+  z-index: 999999 !important;
+}

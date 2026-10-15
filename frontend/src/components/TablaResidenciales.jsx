@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { avisarExito, avisarError, confirmarAccion } from '../utils/notificaciones';
 import axios from 'axios';
 import './TablaResidenciales.css';
 
@@ -27,21 +28,25 @@ export default function TablaResidenciales({ recargar, onEditar }) {
         cargarResidenciales();
     }, [recargar]);
 
-    const handleDesactivar = async (residencial) => {
-        if (!window.confirm(`¿Desactivar "${residencial.nombre}"?`)) {
-            return;
-        }
-
-        try {
-            await axios.patch(
-                `http://localhost:3000/residenciales/${residencial.id}/desactivar`,
-                {},
-                { withCredentials: true }
-            );
-            cargarResidenciales();
-        } catch (err) {
-            alert(err.response?.data?.error || 'No se pudo desactivar el residencial.');
-        }
+    const handleDesactivar = (residencial) => {
+        confirmarAccion({
+            titulo: `¿Desactivar "${residencial.nombre}"?`,
+            descripcion: 'Podrás reactivarlo más adelante editándolo.',
+            textoBoton: 'Desactivar',
+            onConfirmar: async () => {
+                try {
+                    await axios.patch(
+                        `http://localhost:3000/residenciales/${residencial.id}/desactivar`,
+                        {},
+                        { withCredentials: true }
+                    );
+                    avisarExito(`"${residencial.nombre}" fue desactivado`);
+                    cargarResidenciales();
+                } catch (err) {
+                    avisarError(err.response?.data?.error || 'No se pudo desactivar el residencial.');
+                }
+            },
+        });
     };
 
     if (cargando) {

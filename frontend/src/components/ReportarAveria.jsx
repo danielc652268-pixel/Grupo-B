@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { avisarExito, avisarError } from '../utils/notificaciones'
 import axios from 'axios'
 import './ReportarAveria.css'
 
@@ -17,8 +18,6 @@ export default function ReportarAveria() {
   const [areaComunId, setAreaComunId] = useState('')
   const [categoria, setCategoria] = useState('')
   const [descripcion, setDescripcion] = useState('')
-  const [mensaje, setMensaje] = useState('')
-  const [error, setError] = useState('')
   const [cargando, setCargando] = useState(true)
 
   useEffect(() => {
@@ -33,7 +32,7 @@ export default function ReportarAveria() {
           setUbicacion('area_comun')
         }
       } catch (err) {
-        setError('No se pudo cargar la información del formulario.')
+        avisarError('No se pudo cargar la información del formulario.')
       } finally {
         setCargando(false)
       }
@@ -44,8 +43,7 @@ export default function ReportarAveria() {
 
   const manejarEnvio = async (e) => {
     e.preventDefault()
-    setError('')
-    setMensaje('')
+
 
     try {
       await axios.post('http://localhost:3000/reportes', {
@@ -56,12 +54,12 @@ export default function ReportarAveria() {
         descripcion,
       }, { withCredentials: true })
 
-      setMensaje('Tu reporte fue enviado. Le avisaremos al equipo de mantenimiento.')
+      avisarExito('Tu reporte fue enviado. Le avisaremos al equipo de mantenimiento.')
       setCategoria('')
       setDescripcion('')
       setAreaComunId('')
     } catch (err) {
-      setError(err.response?.data?.error || 'No se pudo enviar el reporte.')
+      avisarError(err.response?.data?.error || 'No se pudo enviar el reporte.')
     }
   }
 
@@ -72,9 +70,6 @@ export default function ReportarAveria() {
   return (
     <form className="form-reporte" onSubmit={manejarEnvio}>
       <h2>Reportar un problema</h2>
-
-      {mensaje && <p style={{ color: 'green' }}>{mensaje}</p>}
-      {error && <p style={{ color: '#d32f2f' }}>{error}</p>}
 
       <label>Ubicación del problema</label>
       <div className="opciones-ubicacion">

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { avisarExito, avisarError } from '../utils/notificaciones';
 import './FormularioResidencialyEdificios.css';
 
 const DATOS_VACIOS = {
@@ -16,7 +17,6 @@ const DATOS_VACIOS = {
 export default function FormularioResidencialyEdificios({ residencialEditar, onCerrarEdicion, onGuardado }) {
     const [isOpen, setIsOpen] = useState(false);
     const [infoResidencial, setInfoResidencial] = useState(DATOS_VACIOS);
-    const [error, setError] = useState('');
     const [enviando, setEnviando] = useState(false);
 
     const editando = Boolean(residencialEditar);
@@ -39,7 +39,7 @@ export default function FormularioResidencialyEdificios({ residencialEditar, onC
                 cantidadEdificios,
                 edificios: Array.from({ length: cantidadEdificios }, (_, i) => edificiosExistentes[i] || '')
             });
-            setError('');
+
         }
     }, [residencialEditar]);
 
@@ -69,7 +69,6 @@ export default function FormularioResidencialyEdificios({ residencialEditar, onC
     const cerrarModal = () => {
         setIsOpen(false);
         setInfoResidencial(DATOS_VACIOS);
-        setError('');
         if (editando) {
             onCerrarEdicion?.();
         }
@@ -77,7 +76,6 @@ export default function FormularioResidencialyEdificios({ residencialEditar, onC
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setError('');
         setEnviando(true);
 
         try {
@@ -87,14 +85,14 @@ export default function FormularioResidencialyEdificios({ residencialEditar, onC
                     infoResidencial,
                     { withCredentials: true }
                 );
-                alert("¡Residencial/Edificio actualizado exitosamente!");
+                avisarExito("Residencial/Edificio actualizado exitosamente");
             } else {
                 await axios.post(
                     'http://localhost:3000/residenciales',
                     infoResidencial,
                     { withCredentials: true }
                 );
-                alert("¡Residencial/Edificio registrado exitosamente!");
+                avisarExito("Residencial/Edificio registrado exitosamente");
             }
 
             setInfoResidencial(DATOS_VACIOS);
@@ -104,7 +102,7 @@ export default function FormularioResidencialyEdificios({ residencialEditar, onC
                 onCerrarEdicion?.();
             }
         } catch (err) {
-            setError(err.response?.data?.error || 'No se pudo guardar el residencial.');
+            avisarError(err.response?.data?.error || 'No se pudo guardar el residencial.');
         } finally {
             setEnviando(false);
         }
@@ -126,8 +124,7 @@ export default function FormularioResidencialyEdificios({ residencialEditar, onC
                     <div className="modal-contenido-residencial">
                         <h2>{editando ? 'Editar Residencial' : 'Registro de Residencial'}</h2>
 
-                        {error && <p style={{ color: '#d32f2f' }}>{error}</p>}
-
+                        
                         <form onSubmit={handleSubmit}>
                             <div className="grupo-input-residencial">
                                 <label>Nombre del Residencial/Edificio:</label>

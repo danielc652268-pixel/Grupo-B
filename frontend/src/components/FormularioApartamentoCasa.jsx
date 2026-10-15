@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { avisarExito, avisarError } from '../utils/notificaciones';
 import axios from 'axios';
 import './FormularioApartamentoCasa.css';
 
@@ -15,7 +16,6 @@ export default function FormularioApartamentoCasa({ apartamentoEditar, onCerrarE
     const [infoApartamento, setInfoApartamento] = useState(DATOS_VACIOS);
     const [residenciales, setResidenciales] = useState([]);
     const [usuarios, setUsuarios] = useState([]);
-    const [error, setError] = useState('');
     const [enviando, setEnviando] = useState(false);
 
     const editando = Boolean(apartamentoEditar);
@@ -60,7 +60,7 @@ export default function FormularioApartamentoCasa({ apartamentoEditar, onCerrarE
                 residencial_id: apartamentoEditar.residencial_id || '',
                 usuario_id: apartamentoEditar.usuario_id || ''
             });
-            setError('');
+           
         }
     }, [apartamentoEditar]);
 
@@ -72,7 +72,6 @@ export default function FormularioApartamentoCasa({ apartamentoEditar, onCerrarE
     const cerrarModal = () => {
         setIsOpen(false);
         setInfoApartamento(DATOS_VACIOS);
-        setError('');
         if (editando) {
             onCerrarEdicion?.();
         }
@@ -80,7 +79,6 @@ export default function FormularioApartamentoCasa({ apartamentoEditar, onCerrarE
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setError('');
         setEnviando(true);
 
         try {
@@ -90,14 +88,14 @@ export default function FormularioApartamentoCasa({ apartamentoEditar, onCerrarE
                     infoApartamento,
                     { withCredentials: true }
                 );
-                alert("¡Apartamento/Casa actualizado exitosamente!");
+                avisarExito("Apartamento/Casa actualizado exitosamente");
             } else {
                 await axios.post(
                     'http://localhost:3000/apartamento',
                     infoApartamento,
                     { withCredentials: true }
                 );
-                alert("¡Apartamento/Casa registrado exitosamente!");
+                avisarExito("¡Apartamento/Casa registrado exitosamente!");
             }
 
             setInfoApartamento(DATOS_VACIOS);
@@ -107,7 +105,7 @@ export default function FormularioApartamentoCasa({ apartamentoEditar, onCerrarE
                 onCerrarEdicion?.();
             }
         } catch (err) {
-            setError(err.response?.data?.error || 'No se pudo guardar el apartamento.');
+            avisarError(err.response?.data?.error || 'No se pudo guardar el apartamento.');
         } finally {
             setEnviando(false);
         }
@@ -127,7 +125,7 @@ export default function FormularioApartamentoCasa({ apartamentoEditar, onCerrarE
                     <div className="modal-contenido-apartamento">
                         <h2>{editando ? 'Editar Apartamento o Casa' : 'Registro de Apartamento o Casa'}</h2>
 
-                        {error && <p style={{ color: '#d32f2f' }}>{error}</p>}
+                        
 
                         <form onSubmit={handleSubmit}>
                             <div className="grupo-input-apartamento">

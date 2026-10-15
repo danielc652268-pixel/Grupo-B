@@ -53,7 +53,7 @@
   box-shadow: 0 0 0 2px rgba(21, 101, 192, 0.15);
 }
 
-button {
+.login-button {
   width: 100%;
   padding: 12px;
   border: none;
@@ -65,7 +65,7 @@ button {
   cursor: pointer;
 }
 
-button:hover {
+.login-button:hover {
   background-color: #0d47a1;
 }
 

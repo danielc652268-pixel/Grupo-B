@@ -1,3 +1,4 @@
+import { Toaster } from 'sileo'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import FormularioUsuario from './components/FormularioUsuario'
 import Login from './assets/components/Login'
@@ -10,6 +11,7 @@ import ReportarAveria from './components/ReportarAveria'
 function App() {
   return (
     <AuthProvider>
+      <Toaster position="top-center" theme="light" />
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<Login />} />
