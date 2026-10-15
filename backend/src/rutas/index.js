@@ -331,4 +331,8 @@ route.get("/tecnicos", verifyToken, verificarRol(1), tecnicoController.obtenerTe
 
 route.get("/reportes", verifyToken, verificarRol(1), reporteController.obtenerTodosLosReportes)
 
+route.delete("/reportes/:id", verifyToken, verificarRol(1), reporteController.eliminarReporte)
+
+route.patch("/reportes/:id/reasignar", verifyToken, verificarRol(1), reporteController.reasignarTecnico)
+
 module.exports = route

@@ -107,6 +107,40 @@ const asignarTecnico = (reporteId, tecnicoId, fechaProgramada) => {
     })
 }
 
+const reasignarTecnico = (reporteId, tecnicoId, fechaProgramada) => {
+    return new Promise((resolve, reject) => {
+        if (!reporteId || !tecnicoId) {
+            return reject({ status: 400, message: "Selecciona un técnico para asignar" })
+        }
+
+        const fecha = fechaProgramada || null
+        if (fecha && !/^\d{4}-\d{2}-\d{2}$/.test(fecha)) {
+            return reject({ status: 400, message: "La fecha programada no es válida" })
+        }
+
+        tecnicoModel.obtenerPorId(tecnicoId, (error, tecnicos) => {
+            if (error) return reject({ status: 500, message: "Error verificando el técnico", error })
+            if (!tecnicos[0]) return reject({ status: 404, message: "El técnico seleccionado no existe" })
+
+            reporteModel.obtenerPorId(reporteId, (error, reportes) => {
+                if (error) return reject({ status: 500, message: "Error verificando el reporte", error })
+
+                const reporte = reportes[0]
+                if (!reporte) return reject({ status: 404, message: "El reporte no existe" })
+                if (reporte.estado_nombre !== 'ASIGNADO') {
+                    return reject({ status: 400, message: "Solo se pueden editar reportes ya asignados" })
+                }
+
+                reporteModel.asignarTecnico(reporteId, tecnicoId, fecha, (error, results) => {
+                    if (error) return reject({ status: 500, message: "Error actualizando el reporte", error })
+                    if (results.affectedRows === 0) return reject({ status: 404, message: "El reporte no existe" })
+                    resolve({ id: Number(reporteId), tecnico_id: Number(tecnicoId), fecha_programada: fecha, estado: 'ASIGNADO' })
+                })
+            })
+        })
+    })
+}
+
 const listarReportesAsignados = () => {
     return new Promise((resolve, reject) => {
         reporteModel.listarAsignados((error, results) => {
@@ -125,6 +159,17 @@ const listarTodosLosReportes = (filtros) => {
     })
 }
 
+const eliminarReporte = (id) => {
+    return new Promise((resolve, reject) => {
+        reporteModel.eliminar(id, (error, results) => {
+            if (error) return reject({ status: 500, message: "Error eliminando el reporte", error })
+            if (results.affectedRows === 0) return reject({ status: 404, message: "Reporte no encontrado" })
+            resolve({ id })
+        })
+    })
+}
+
+
 module.exports = {
     obtenerMiApartamento,
     obtenerResidencialDeUsuario,
@@ -134,4 +179,6 @@ module.exports = {
     asignarTecnico,
     listarReportesAsignados,
     listarTodosLosReportes,
+    eliminarReporte,
+    reasignarTecnico,
 }

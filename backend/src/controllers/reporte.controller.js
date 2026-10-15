@@ -60,6 +60,25 @@ const obtenerTodosLosReportes = async (req, res) => {
     }
 }
 
+const eliminarReporte = async (req, res) => {
+    try {
+        const resultado = await reporteService.eliminarReporte(req.params.id)
+        res.status(200).send(resultado)
+    } catch (error) {
+        res.status(error.status || 500).send({ error: error.message || "Error eliminando el reporte" })
+    }
+}
+
+const reasignarTecnico = async (req, res) => {
+    try {
+        const { tecnico_id, fecha_programada } = req.body
+        const resultado = await reporteService.reasignarTecnico(req.params.id, tecnico_id, fecha_programada)
+        res.status(200).send(resultado)
+    } catch (error) {
+        res.status(error.status || 500).send({ error: error.message || "Error actualizando el reporte" })
+    }
+}
+
 module.exports = {
     obtenerDatosFormulario,
     crearReporte,
@@ -67,4 +86,6 @@ module.exports = {
     asignarTecnico,
     obtenerReportesAsignados,
     obtenerTodosLosReportes,
+    eliminarReporte,
+    reasignarTecnico
 }

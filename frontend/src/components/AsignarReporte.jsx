@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { avisarExito, avisarError } from '../utils/notificaciones'
 import axios from 'axios'
 import './AsignarReporte.css'
 
@@ -16,13 +17,11 @@ export default function AsignarReporte({ onGuardado }) {
   const [seleccion, setSeleccion] = useState({})
   const [fechas, setFechas] = useState({})
   const [asignandoId, setAsignandoId] = useState(null)
-  const [mensaje, setMensaje] = useState('')
-  const [error, setError] = useState('')
   const [cargando, setCargando] = useState(true)
 
   const cargarDatos = async () => {
     setCargando(true)
-    setError('')
+
 
     try {
       const [respuestaReportes, respuestaTecnicos] = await Promise.all([
@@ -32,7 +31,7 @@ export default function AsignarReporte({ onGuardado }) {
       setReportes(respuestaReportes.data)
       setTecnicos(respuestaTecnicos.data)
     } catch (err) {
-      setError('No se pudieron cargar los reportes pendientes.')
+      avisarError('No se pudieron cargar los reportes pendientes.')
     } finally {
       setCargando(false)
     }
@@ -53,13 +52,12 @@ export default function AsignarReporte({ onGuardado }) {
   const manejarAsignacion = async (reporteId) => {
     const tecnicoId = seleccion[reporteId]
     if (!tecnicoId) {
-      setError('Selecciona un técnico antes de asignar.')
+      avisarError('Selecciona un técnico antes de asignar.')
       return
     }
 
-    setError('')
-    setMensaje('')
     setAsignandoId(reporteId)
+
 
     try {
       await axios.patch(
@@ -68,13 +66,13 @@ export default function AsignarReporte({ onGuardado }) {
         { withCredentials: true }
       )
 
-      setReportes((actuales) => actuales.filter((reporte) => reporte.id !== reporteId))
-      setMensaje('Técnico asignado correctamente. El reporte pasó a Asignado.')
-      onGuardado?.()
+    setReportes((actuales) => actuales.filter((reporte) => reporte.id !== reporteId))
+    avisarExito('Técnico asignado correctamente. El reporte pasó a Asignado.')
+    onGuardado?.()
     } catch (err) {
-      setError(err.response?.data?.error || 'No se pudo asignar el técnico.')
+    avisarError(err.response?.data?.error || 'No se pudo asignar el técnico.')
     } finally {
-      setAsignandoId(null)
+    setAsignandoId(null)
     }
   }
 
@@ -86,8 +84,7 @@ export default function AsignarReporte({ onGuardado }) {
     <div className="asignar-reporte-container">
       <h2>Asignar técnico</h2>
 
-      {mensaje && <p className="asignar-reporte-mensaje asignar-reporte-exito">{mensaje}</p>}
-      {error && <p className="asignar-reporte-mensaje asignar-reporte-error">{error}</p>}
+      
 
       <table className="asignar-reporte-tabla">
         <thead>

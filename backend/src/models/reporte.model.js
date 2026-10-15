@@ -66,6 +66,7 @@ const listarAsignados = (callback) => {
     const sql = `
         SELECT
             r.id,
+            r.tecnico_id,
             r.categoria,
             r.descripcion,
             r.fecha_reporte,
@@ -135,6 +136,11 @@ const listarTodos = (filtros, callback) => {
     db.query(sql, valores, callback)
 }
 
+const eliminar = (id, callback) => {
+    const sql = "DELETE FROM reportes WHERE id = ?"
+    db.query(sql, [id], callback)
+}
+
 module.exports = {
     crear,
     obtenerMiApartamento,
@@ -145,4 +151,5 @@ module.exports = {
     listarAsignados,
     historialMantenimiento,
     listarTodos,
+    eliminar,
 }

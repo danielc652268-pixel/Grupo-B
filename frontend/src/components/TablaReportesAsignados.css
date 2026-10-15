@@ -46,3 +46,39 @@
 .boton-eliminar:active {
   transform: scale(0.96);
 }
+
+.modal-overlay-reporte {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-contenido-reporte {
+  background-color: #fff;
+  padding: 28px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 420px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.modal-contenido-reporte h3 {
+  margin: 0 0 16px;
+}
+
+.modal-contenido-reporte p {
+  margin: 0 0 10px;
+  font-size: 14px;
+  color: #333;
+}
+
+.modal-contenido-reporte .boton-eliminar {
+  margin-top: 10px;
+}
