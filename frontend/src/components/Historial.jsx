@@ -279,13 +279,14 @@ function TablaPropietarios() {
 
 
 function TablaMantenimiento() {
+  const { usuario } = useAuth();
   const { datos, cargando, error } = useDatos(URL_MANTENIMIENTOS);
 
   return (
     <section className="tarjeta">
 
       <div className="tarjeta-encabezado">
-        <h2>Mantenimiento</h2>
+        <h2>{usuario?.role === 3 ? "Reportes creados por mí" : "Mantenimiento"}</h2>
       </div>
 
       {cargando && (
@@ -396,7 +397,7 @@ export default function Historial() {
   return (
     <main className="historial">
 
-      <h1>Historial</h1>
+      <h1>{usuario?.role === 3 ? "Mis reportes" : "Historial"}</h1>
 
       {usuario?.role === 1 && <TablaPropietarios />}
 

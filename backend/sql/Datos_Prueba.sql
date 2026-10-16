@@ -18,7 +18,7 @@
 -- CREDENCIALES (las contrasenas estan guardadas con bcrypt)
 -- ---------------------------------------------------------
 --   Rol        Email                          Contrasena
---   RESIDENTE  mariana.gomez@demo.com          Residente123*
+--   RESIDENTE            Residente123*
 --   RESIDENTE  andres.perez@demo.com           Residente123*
 --   RESIDENTE  valentina.rojas@demo.com        Residente123*
 --   RESIDENTE  camilo.torres@demo.com          Residente123*
