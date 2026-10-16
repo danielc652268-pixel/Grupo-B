@@ -21,6 +21,12 @@ export default function TablaReportesAsignados({ recargar }) {
   const [edicionTecnico, setEdicionTecnico] = useState('')
   const [edicionFecha, setEdicionFecha] = useState('')
   const [guardando, setGuardando] = useState(false)
+  const [orden, setOrden] = useState('recientes')
+
+  const reportesOrdenados = [...reportes].sort((a, b) => {
+    const diferencia = new Date(b.fecha_reporte) - new Date(a.fecha_reporte)
+    return orden === 'recientes' ? diferencia : -diferencia
+  })
 
   const cargarReportes = async () => {
     setCargando(true)
@@ -108,7 +114,26 @@ export default function TablaReportesAsignados({ recargar }) {
 
   return (
     <div className="asignar-reporte-container">
-      <h2>Reportes asignados</h2>
+      <div className="asignar-reporte-encabezado">
+        <h2>Reportes asignados</h2>
+
+        <div className="asignar-reporte-orden">
+          <button
+            type="button"
+            className={orden === 'recientes' ? 'activo' : ''}
+            onClick={() => setOrden('recientes')}
+          >
+            Más recientes
+          </button>
+          <button
+            type="button"
+            className={orden === 'antiguos' ? 'activo' : ''}
+            onClick={() => setOrden('antiguos')}
+          >
+            Más antiguos
+          </button>
+        </div>
+      </div>
 
       <table className="asignar-reporte-tabla">
         <thead>
@@ -124,7 +149,7 @@ export default function TablaReportesAsignados({ recargar }) {
           </tr>
         </thead>
         <tbody>
-          {reportes.map((reporte) => (
+          {reportesOrdenados.map((reporte) => (
             <tr key={reporte.id}>
               <td>{new Date(reporte.fecha_reporte).toLocaleDateString()}</td>
               <td>{reporte.residente}</td>

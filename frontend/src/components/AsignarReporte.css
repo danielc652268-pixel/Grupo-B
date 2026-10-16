@@ -15,6 +15,45 @@
   color: #1a202c;
 }
 
+.asignar-reporte-encabezado {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.asignar-reporte-encabezado h2 {
+  margin: 0;
+}
+
+.asignar-reporte-orden {
+  display: flex;
+  gap: 8px;
+}
+
+.asignar-reporte-orden button {
+  padding: 7px 14px;
+  border: 1px solid #cbd5e0;
+  border-radius: 999px;
+  background: #fff;
+  color: #4a5568;
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.asignar-reporte-orden button:hover {
+  background: #f1f5f9;
+}
+
+.asignar-reporte-orden button.activo {
+  background: #1f6feb;
+  border-color: #1f6feb;
+  color: #fff;
+}
+
 .asignar-reporte-select {
   padding: 8px 10px;
   border: 1px solid #cbd5e0;

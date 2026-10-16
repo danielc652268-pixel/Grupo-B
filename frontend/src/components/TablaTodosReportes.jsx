@@ -26,7 +26,12 @@ export default function TablaTodosReportes() {
   const [filtroEstado, setFiltroEstado] = useState('')
   const [filtroTecnico, setFiltroTecnico] = useState('')
   const [cargando, setCargando] = useState(true)
-  
+  const [orden, setOrden] = useState('recientes')
+
+  const reportesOrdenados = [...reportes].sort((a, b) => {
+    const diferencia = new Date(b.fecha_reporte) - new Date(a.fecha_reporte)
+    return orden === 'recientes' ? diferencia : -diferencia
+  })
 
   useEffect(() => {
     const cargarFiltros = async () => {
@@ -81,7 +86,26 @@ export default function TablaTodosReportes() {
 
   return (
     <div className="asignar-reporte-container">
-      <h2>Todos los reportes</h2>
+      <div className="asignar-reporte-encabezado">
+        <h2>Todos los reportes</h2>
+
+        <div className="asignar-reporte-orden">
+          <button
+            type="button"
+            className={orden === 'recientes' ? 'activo' : ''}
+            onClick={() => setOrden('recientes')}
+          >
+            Más recientes
+          </button>
+          <button
+            type="button"
+            className={orden === 'antiguos' ? 'activo' : ''}
+            onClick={() => setOrden('antiguos')}
+          >
+            Más antiguos
+          </button>
+        </div>
+      </div>
 
       <div className="filtros-reportes">
         <select
@@ -136,7 +160,7 @@ export default function TablaTodosReportes() {
             </tr>
           </thead>
           <tbody>
-            {reportes.map((reporte) => (
+            {reportesOrdenados.map((reporte) => (
               <tr key={reporte.id}>
                 <td>#{reporte.id}</td>
                 <td>{new Date(reporte.fecha_reporte).toLocaleDateString()}</td>
