@@ -1,4 +1,5 @@
 import './Sidebar.css'
+import logo from '../assets/components/images/JDM Repair - logo.png'
 
 const SECCIONES = [
   {
@@ -31,7 +32,10 @@ const SECCIONES = [
 export default function Sidebar({ rol, vistaActiva, onSeleccionar, onCerrarSesion }) {
   return (
     <aside className="sidebar">
-      <div className="sidebar-brand">JDM Repair</div>
+      <div className="sidebar-brand">
+        <img className="sidebar-logo" src={logo} alt="" />
+        <span>JDM Repair</span>
+      </div>
 
       <nav className="sidebar-nav">
         {SECCIONES.filter((seccion) => !seccion.soloRol || seccion.soloRol === rol).map(
