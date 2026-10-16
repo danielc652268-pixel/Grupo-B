@@ -6,14 +6,14 @@ import './TablaApartamentoCasa.css';
 export default function TablaApartamentoCasa({ recargar }) {
 
     const [apartamentos, setApartamentos] = useState([])
-    const [cargando, setCargando] = useState(true)
-    const [error, setError] = useState('')
+    
     
 
 
+    const [cargando, setCargando] = useState(true)
+
     const cargarApartamentos = async () => {
         setCargando(true)
-        setError('')
 
         try {
             const respuesta = await axios.get('http://localhost:3000/apartamento', {
@@ -21,12 +21,11 @@ export default function TablaApartamentoCasa({ recargar }) {
             })
             setApartamentos(respuesta.data)
         } catch (err) {
-            setError('No se pudieron cargar los apartamentos.')
+            avisarError('No se pudieron cargar los apartamentos.')
         } finally {
             setCargando(false)
         }
     }
-
     useEffect(() => {
         cargarApartamentos()
     }, [recargar])

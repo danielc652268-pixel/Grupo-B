@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import { avisarError } from '../utils/notificaciones'
 import './AsignarReporte.css'
 import './TablaReportesAsignados.css'
 import './TablaTodosReportes.css'
@@ -25,7 +26,7 @@ export default function TablaTodosReportes() {
   const [filtroEstado, setFiltroEstado] = useState('')
   const [filtroTecnico, setFiltroTecnico] = useState('')
   const [cargando, setCargando] = useState(true)
-  const [error, setError] = useState('')
+  
 
   useEffect(() => {
     const cargarFiltros = async () => {
@@ -37,7 +38,7 @@ export default function TablaTodosReportes() {
         setResidenciales(resResidenciales.data)
         setTecnicos(resTecnicos.data)
       } catch (err) {
-        console.log('No se pudieron cargar los filtros', err)
+        avisarError('No se pudieron cargar los filtros', err)
       }
     }
 
@@ -47,7 +48,7 @@ export default function TablaTodosReportes() {
   useEffect(() => {
     const cargarReportes = async () => {
       setCargando(true)
-      setError('')
+      
 
       try {
         const respuesta = await axios.get('http://localhost:3000/reportes', {
@@ -60,7 +61,7 @@ export default function TablaTodosReportes() {
         })
         setReportes(respuesta.data)
       } catch (err) {
-        setError('No se pudieron cargar los reportes.')
+        avisarError('No se pudieron cargar los reportes.')
       } finally {
         setCargando(false)
       }
@@ -117,7 +118,7 @@ export default function TablaTodosReportes() {
         </select>
       </div>
 
-      {error && <p className="asignar-reporte-mensaje asignar-reporte-error">{error}</p>}
+      
 
       {cargando ? (
         <p>Cargando reportes...</p>

@@ -1,12 +1,10 @@
 import { Toaster } from 'sileo'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import FormularioUsuario from './components/FormularioUsuario'
 import Login from './assets/components/Login'
 import Dashboard from './components/Dashboard'
 import RutaProtegida from './components/RutaProtegida'
 import AccesoDenegado from './components/AccesoDenegado'
 import { AuthProvider } from './context/AuthContext'
-import ReportarAveria from './components/ReportarAveria'
 
 function App() {
   return (
@@ -25,23 +23,9 @@ function App() {
             }
           />
 
-          <Route
-            path="/crear-usuario"
-            element={
-              <RutaProtegida rolesPermitidos={[1]}>
-                <FormularioUsuario />
-              </RutaProtegida>
-            }
-          />
+          
 
-          <Route
-            path="/reportar-averia"
-            element={
-              <RutaProtegida rolesPermitidos={[3]}>
-                <ReportarAveria />
-              </RutaProtegida>
-            }
-          />
+          
 
           <Route path="/acceso-denegado" element={<AccesoDenegado />} />
 

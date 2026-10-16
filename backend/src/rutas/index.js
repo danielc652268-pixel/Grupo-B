@@ -10,7 +10,6 @@ const usuarioController = require('../controllers/usuario.controller')
 const apartamentoCasaController = require('../controllers/apartamento_casa.controller')
 const reporteController = require('../controllers/reporte.controller')
 const tecnicoController = require('../controllers/tecnico.controller')
-const reporteModel = require("../models/reporte.model.js")
 const modelpropietario = require("../models/usuario.model.js")
 
 route.get("/test", verifyToken, (req, res) => {
@@ -102,21 +101,6 @@ route.post("/register", verifyToken, (req, res) => {
 
 
 
-route.post("/", (req, res) => {
-
-    const { edificio, direccion } = req.body
-
-    models.postClient(edificio, direccion, (error, results) => {
-        if (error) {
-            res.status(500).send(error)
-            return;
-        }
-        res.status(200).json(results)
-    })
-})
-
-
-
 route.get("/maintenance", verifyToken, (req, res) => {
 
     if (req.user.role !== 2) {
@@ -189,31 +173,7 @@ route.get("/maintenance/:id/comentarios", verifyToken, (req, res) => {
     })
 })
 
-//login Overdue maintenance
 
-route.post("/maintenance", verifyToken, async (req, res) => {
-
-    const { estado } = req.body
-
-    const userInfo = req.user
-
-    console.log(userInfo)
-
-    if (!userInfo || userInfo?.role != 2) {
-        res.status(400).send({ error: "no permission" })
-        return;
-    }
-
-    models.overDueMaintenance(estado, (error, results) => {
-        if (error) {
-            res.status(500).send({ error: "error obteniendo datos" })
-            return;
-        }
-
-        res.status(200).send(results)
-
-    })
-})
 
 route.post("/residenciales", verifyToken, (req, res, next) => {
     if (req.user.role !== 1) {
@@ -318,15 +278,7 @@ route.get("/propietarios", verifyToken, verificarRol(1), (req, res) => {
 
 )
 
-route.get("/mantenimiento", verifyToken, (req, res) => {
-    reporteModel.historialMantenimiento((error, results) => {
-        if (error) {
-            return res.status(400).send({ error: "error dando mantenimientos" })
-        }
 
-        return res.status(200).send(results)
-    })
-})
 
 route.get("/reportes/pendientes", verifyToken, verificarRol(1), reporteController.obtenerReportesPendientes)
 

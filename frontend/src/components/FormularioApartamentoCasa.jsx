@@ -42,8 +42,7 @@ export default function FormularioApartamentoCasa({ apartamentoEditar, onCerrarE
                 const respuesta = await axios.get('http://localhost:3000/usuarios', {
                     withCredentials: true,
                 });
-                setUsuarios(respuesta.data);
-            } catch (err) {
+                setUsuarios(respuesta.data.filter((usuario) => usuario.role_id === 3));            } catch (err) {
                 console.log('No se pudo cargar la lista de usuarios', err);
             }
         };
