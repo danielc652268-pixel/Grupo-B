@@ -282,11 +282,41 @@ function TablaMantenimiento() {
   const { usuario } = useAuth();
   const { datos, cargando, error } = useDatos(URL_MANTENIMIENTOS);
 
+  const esResidente = usuario?.role === 3;
+  const [orden, setOrden] = useState("recientes");
+
+  const datosOrdenados = esResidente
+    ? [...datos].sort((a, b) => {
+        const diferencia =
+          new Date(b.fecha_creacion) - new Date(a.fecha_creacion);
+
+        return orden === "recientes" ? diferencia : -diferencia;
+      })
+    : datos;
+
   return (
     <section className="tarjeta">
 
       <div className="tarjeta-encabezado">
-        <h2>{usuario?.role === 3 ? "Reportes creados por mí" : "Mantenimiento"}</h2>
+        <h2>{esResidente ? "Reportes creados por mí" : "Mantenimiento"}</h2>
+
+        {esResidente && (
+          <div className="filtro">
+            <button
+              className={orden === "recientes" ? "activo" : ""}
+              onClick={() => setOrden("recientes")}
+            >
+              Más recientes
+            </button>
+
+            <button
+              className={orden === "antiguos" ? "activo" : ""}
+              onClick={() => setOrden("antiguos")}
+            >
+              Más antiguos
+            </button>
+          </div>
+        )}
       </div>
 
       {cargando && (
@@ -311,6 +341,7 @@ function TablaMantenimiento() {
 
               <tr>
                 <th>Tipo</th>
+                {esResidente && <th>Fecha del reporte</th>}
                 <th>Fecha programada</th>
                 <th>Descripción</th>
                 <th>Estado</th>
@@ -320,15 +351,17 @@ function TablaMantenimiento() {
 
             <tbody>
 
-              {datos.length === 0 && (
+              {datosOrdenados.length === 0 && (
                 <tr>
-                  <td colSpan="4" className="vacio">
-                    Aún no hay mantenimientos registrados.
+                  <td colSpan={esResidente ? 5 : 4} className="vacio">
+                    {esResidente
+                      ? "Aún no has creado reportes."
+                      : "Aún no hay mantenimientos registrados."}
                   </td>
                 </tr>
               )}
 
-              {datos.map((m) => {
+              {datosOrdenados.map((m) => {
 
                 const estado =
                   ESTADOS_MANTENIMIENTO[m.estado];
@@ -350,6 +383,12 @@ function TablaMantenimiento() {
                       </div>
 
                     </td>
+
+                    {esResidente && (
+                      <td>
+                        {formatearFecha(m.fecha_creacion)}
+                      </td>
+                    )}
 
                     <td>
                       {formatearFecha(m.fecha_programada)}
