@@ -165,6 +165,38 @@ const listarComentarios = (id, callback) => {
     db.query(sql, [id], callback)
 }
 
+// Mismo formato que mantenimientosDeTecnico, filtrado segun el rol:
+// 1 = todos, 2 = los asignados al tecnico, 3 = los reportes del residente
+const listarHistorialMantenimiento = (usuario, callback) => {
+    let where = ''
+    const valores = []
+
+    if (usuario.role === 2) {
+        where = 'WHERE r.tecnico_id = ?'
+        valores.push(usuario.id)
+    } else if (usuario.role === 3) {
+        where = 'WHERE r.usuario_id = ?'
+        valores.push(usuario.id)
+    }
+
+    const sql = `
+        SELECT
+            r.id,
+            r.fecha_reporte AS fecha_creacion,
+            r.categoria AS tipo,
+            t.nombre AS tecnico,
+            r.descripcion,
+            r.fecha_programada,
+            e.nombre AS estado
+        FROM reportes r
+        JOIN estados_mantenimiento e ON e.id = r.estado_id
+        LEFT JOIN usuarios t ON t.id = r.tecnico_id
+        ${where}
+        ORDER BY r.fecha_reporte DESC
+    `
+    db.query(sql, valores, callback)
+}
+
 const eliminar = (id, callback) => {
     const sql = "DELETE FROM reportes WHERE id = ?"
     db.query(sql, [id], callback)
@@ -181,5 +213,6 @@ module.exports = {
     listarTodos,
     obtenerDetalle,
     listarComentarios,
+    listarHistorialMantenimiento,
     eliminar,
 }

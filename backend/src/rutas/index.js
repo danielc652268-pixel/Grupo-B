@@ -11,6 +11,7 @@ const apartamentoCasaController = require('../controllers/apartamento_casa.contr
 const reporteController = require('../controllers/reporte.controller')
 const tecnicoController = require('../controllers/tecnico.controller')
 const modelpropietario = require("../models/usuario.model.js")
+const reporteModel = require("../models/reporte.model.js")
 
 route.get("/test", verifyToken, (req, res) => {
 
@@ -279,6 +280,17 @@ route.get("/propietarios", verifyToken, verificarRol(1), (req, res) => {
 )
 
 
+
+route.get("/historial/mantenimiento", verifyToken, (req, res) => {
+    reporteModel.listarHistorialMantenimiento(req.user, (error, results) => {
+        if (error) {
+            console.log(error)
+            return res.status(500).send({ error: "error obteniendo el historial de mantenimiento" })
+        }
+
+        res.status(200).send(results)
+    })
+})
 
 route.get("/reportes/pendientes", verifyToken, verificarRol(1), reporteController.obtenerReportesPendientes)
 

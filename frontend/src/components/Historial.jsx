@@ -4,17 +4,17 @@ import { useAuth } from "../context/AuthContext";
 import "./Historial.css";
 
 const URL_PROPIETARIOS = "http://localhost:3000/propietarios";
-const URL_MANTENIMIENTOS = "http://localhost:3000/mantenimiento";
+const URL_MANTENIMIENTOS = "http://localhost:3000/historial/mantenimiento";
 
 
 
 const ESTADOS_MANTENIMIENTO = {
-  1: { texto: "Programado", clase: "programado" },
-  2: { texto: "En proceso", clase: "proceso" },
-  3: { texto: "Completado", clase: "completado" },
-  4: { texto: "Cancelado", clase: "cancelado" },
-  5: { texto: "Pendiente", clase: "pendiente" },
-  6: { texto: "Asignado", clase: "asignado" },
+  PROGRAMADO: { texto: "Programado", clase: "programado" },
+  EN_PROCESO: { texto: "En proceso", clase: "proceso" },
+  COMPLETADO: { texto: "Completado", clase: "completado" },
+  CANCELADO: { texto: "Cancelado", clase: "cancelado" },
+  PENDIENTE: { texto: "Pendiente", clase: "pendiente" },
+  ASIGNADO: { texto: "Asignado", clase: "asignado" },
 };
 
 const ICONOS_TIPO = {
