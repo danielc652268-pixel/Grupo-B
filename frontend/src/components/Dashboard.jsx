@@ -11,6 +11,7 @@ import './Dashboard.css'
 import Historial from './Historial'
 import TablaTodosReportes from './TablaTodosReportes'
 import MantenimientoTecnico from './MantenimientoTecnico'
+import './Tablas.css'
 
 const NOMBRES_ROL = {
   1: 'ADMIN',

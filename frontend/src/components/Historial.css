@@ -1,6 +1,6 @@
 /* Colores en un solo lugar, fÃ¡ciles de cambiar */
 .historial {
-  --fondo: #f5f7fb;
+
   --tarjeta: #ffffff;
   --texto: #1e293b;
   --texto-suave: #64748b;
@@ -15,7 +15,7 @@
   font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 
-.historial > * {
+.historial>* {
   max-width: 1100px;
   margin-left: auto;
   margin-right: auto;
@@ -80,40 +80,6 @@
 .filtro button span {
   margin-left: 4px;
   opacity: 0.75;
-}
-
-/* Tabla (con scroll horizontal en pantallas pequeÃ±as) */
-.tabla-contenedor {
-  overflow-x: auto;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.95rem;
-}
-
-th {
-  padding: 10px 14px;
-  text-align: left;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--texto-suave);
-  white-space: nowrap;
-  border-bottom: 1px solid var(--borde);
-}
-
-td {
-  padding: 14px;
-  border-bottom: 1px solid var(--borde);
-}
-
-tbody tr:last-child td {
-  border-bottom: none;
-}
-
-tbody tr:hover {
-  background: #f9fafd;
 }
 
 .descripcion {
@@ -187,13 +153,43 @@ tbody tr:hover {
 }
 
 /* Propietarios */
-.etiqueta.activo     { background: #dcfce7; color: #15803d; }
-.etiqueta.inactivo   { background: #f1f5f9; color: #64748b; }
+.etiqueta.activo {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.etiqueta.inactivo {
+  background: #f1f5f9;
+  color: #64748b;
+}
 
 /* Mantenimiento */
-.etiqueta.programado { background: #e0e7ff; color: #4338ca; }
-.etiqueta.proceso    { background: #fef3c7; color: #b45309; }
-.etiqueta.completado { background: #dcfce7; color: #15803d; }
-.etiqueta.cancelado  { background: #fee2e2; color: #b91c1c; }
-.etiqueta.pendiente  { background: #f3f4f6; color: #4b5563; }
-.etiqueta.asignado   { background: #e0f2fe; color: #0369a1; }
+.etiqueta.programado {
+  background: #e0e7ff;
+  color: #4338ca;
+}
+
+.etiqueta.proceso {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.etiqueta.completado {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.etiqueta.cancelado {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.etiqueta.pendiente {
+  background: #f3f4f6;
+  color: #4b5563;
+}
+
+.etiqueta.asignado {
+  background: #e0f2fe;
+  color: #0369a1;
+}

@@ -15,39 +15,10 @@
   color: #1a202c;
 }
 
-.asignar-reporte-tabla {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 14px;
-}
-
-.asignar-reporte-tabla thead {
-  background-color: #1565c0;
-}
-
-.asignar-reporte-tabla th {
-  color: #fff;
-  text-align: left;
-  padding: 12px 8px;
-  font-weight: 600;
-  white-space: nowrap;
-}
-
-.asignar-reporte-tabla td {
-  padding: 12px 8px;
-  border-bottom: 1px solid #e5e7eb;
-  color: #1a202c;
-  vertical-align: middle;
-}
-
 /* La descripción no debe ensanchar la tabla: se limita y hace salto de línea */
 .asignar-reporte-tabla td:nth-child(5) {
   max-width: 180px;
   overflow-wrap: anywhere;
-}
-
-.asignar-reporte-tabla tbody tr:hover {
-  background-color: #eaf2ff;
 }
 
 .asignar-reporte-select {

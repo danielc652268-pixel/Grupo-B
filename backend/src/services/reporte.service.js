@@ -159,6 +159,20 @@ const listarTodosLosReportes = (filtros) => {
     })
 }
 
+const obtenerDetalleReporte = (id) => {
+    return new Promise((resolve, reject) => {
+        reporteModel.obtenerDetalle(id, (error, reportes) => {
+            if (error) return reject({ status: 500, message: "Error obteniendo el reporte", error })
+            if (!reportes[0]) return reject({ status: 404, message: "Reporte no encontrado" })
+
+            reporteModel.listarComentarios(id, (error, comentarios) => {
+                if (error) return reject({ status: 500, message: "Error obteniendo los comentarios", error })
+                resolve({ ...reportes[0], comentarios })
+            })
+        })
+    })
+}
+
 const eliminarReporte = (id) => {
     return new Promise((resolve, reject) => {
         reporteModel.eliminar(id, (error, results) => {
@@ -179,6 +193,7 @@ module.exports = {
     asignarTecnico,
     listarReportesAsignados,
     listarTodosLosReportes,
+    obtenerDetalleReporte,
     eliminarReporte,
     reasignarTecnico,
 }

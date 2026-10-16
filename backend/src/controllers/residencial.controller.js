@@ -36,10 +36,19 @@ const desactivarResidencial = async (req, res) => {
     }
 }
 
+const activarResidencial = async (req, res) => {
+    try {
+        const resultado = await residencialService.activarResidencial(req.params.id)
+        res.status(200).send(resultado)
+    } catch (error) {
+        res.status(error.status || 500).send({ error: error.message || "Error activando residencial" })
+    }
+}
+
 module.exports = {
     crearResidencial,
     obtenerResidenciales,
     actualizarResidencial,
     desactivarResidencial,
-    
+    activarResidencial,
 }

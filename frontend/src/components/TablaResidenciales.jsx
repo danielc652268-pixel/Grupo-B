@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { avisarExito, avisarError, confirmarAccion } from '../utils/notificaciones';
+import { avisarExito, avisarError } from '../utils/notificaciones';
 import axios from 'axios';
 import './TablaResidenciales.css';
 
@@ -28,25 +28,41 @@ export default function TablaResidenciales({ recargar, onEditar }) {
         cargarResidenciales();
     }, [recargar]);
 
-    const handleDesactivar = (residencial) => {
-        confirmarAccion({
-            titulo: `¿Desactivar "${residencial.nombre}"?`,
-            descripcion: 'Podrás reactivarlo más adelante editándolo.',
-            textoBoton: 'Desactivar',
-            onConfirmar: async () => {
-                try {
-                    await axios.patch(
-                        `http://localhost:3000/residenciales/${residencial.id}/desactivar`,
-                        {},
-                        { withCredentials: true }
-                    );
-                    avisarExito(`"${residencial.nombre}" fue desactivado`);
-                    cargarResidenciales();
-                } catch (err) {
-                    avisarError(err.response?.data?.error || 'No se pudo desactivar el residencial.');
-                }
-            },
-        });
+    const [confirmacion, setConfirmacion] = useState(null);
+    const [procesando, setProcesando] = useState(false);
+
+    const pedirConfirmacion = (residencial, accion) => {
+        setConfirmacion({ residencial, accion });
+    };
+
+    const cancelarConfirmacion = () => {
+        if (!procesando) setConfirmacion(null);
+    };
+
+    const confirmarCambioEstado = async () => {
+        const { residencial, accion } = confirmacion;
+        const activando = accion === 'activar';
+
+        setProcesando(true);
+
+        try {
+            await axios.patch(
+                `http://localhost:3000/residenciales/${residencial.id}/${accion}`,
+                {},
+                { withCredentials: true }
+            );
+            avisarExito(`"${residencial.nombre}" fue ${activando ? 'activado' : 'desactivado'} correctamente.`);
+            setConfirmacion(null);
+            cargarResidenciales();
+        } catch (err) {
+            avisarError(
+                err.response?.data?.error ||
+                    `No se pudo ${activando ? 'activar' : 'desactivar'} el residencial.`
+            );
+            setConfirmacion(null);
+        } finally {
+            setProcesando(false);
+        }
     };
 
     if (cargando) {
@@ -101,13 +117,21 @@ export default function TablaResidenciales({ recargar, onEditar }) {
                                 >
                                     Editar
                                 </button>
-                                <button
-                                    className="btn-desactivar-residencial"
-                                    onClick={() => handleDesactivar(residencial)}
-                                    disabled={residencial.estado === 'Inactivo'}
-                                >
-                                    Desactivar
-                                </button>
+                                {residencial.estado === 'Inactivo' ? (
+                                    <button
+                                        className="btn-activar-residencial"
+                                        onClick={() => pedirConfirmacion(residencial, 'activar')}
+                                    >
+                                        Activar
+                                    </button>
+                                ) : (
+                                    <button
+                                        className="btn-desactivar-residencial"
+                                        onClick={() => pedirConfirmacion(residencial, 'desactivar')}
+                                    >
+                                        Desactivar
+                                    </button>
+                                )}
                             </td>
                         </tr>
                     ))}
@@ -121,6 +145,51 @@ export default function TablaResidenciales({ recargar, onEditar }) {
                     )}
                 </tbody>
             </table>
+            {confirmacion && (
+                <div className="modal-confirmar-fondo" onClick={cancelarConfirmacion}>
+                    <div
+                        className="modal-confirmar"
+                        role="dialog"
+                        aria-modal="true"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <h3>
+                            {confirmacion.accion === 'activar'
+                                ? 'Activar residencial'
+                                : 'Desactivar residencial'}
+                        </h3>
+                        <p>
+                            {confirmacion.accion === 'activar'
+                                ? `Estás por activar "${confirmacion.residencial.nombre}". El residencial volverá a estar activo.`
+                                : `Estás por desactivar "${confirmacion.residencial.nombre}". Podrás volver a activarlo más adelante.`}
+                        </p>
+                        <div className="modal-confirmar-acciones">
+                            <button
+                                className="btn-cancelar-residencial"
+                                onClick={cancelarConfirmacion}
+                                disabled={procesando}
+                            >
+                                Cancelar
+                            </button>
+                            <button
+                                className={
+                                    confirmacion.accion === 'activar'
+                                        ? 'btn-activar-residencial'
+                                        : 'btn-desactivar-residencial'
+                                }
+                                onClick={confirmarCambioEstado}
+                                disabled={procesando}
+                            >
+                                {procesando
+                                    ? 'Procesando...'
+                                    : confirmacion.accion === 'activar'
+                                      ? 'Sí, activar'
+                                      : 'Sí, desactivar'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

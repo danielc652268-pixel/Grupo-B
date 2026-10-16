@@ -136,6 +136,43 @@ const listarTodos = (filtros, callback) => {
     db.query(sql, valores, callback)
 }
 
+const obtenerDetalle = (id, callback) => {
+    const sql = `
+        SELECT
+            r.id,
+            r.categoria,
+            r.descripcion,
+            r.fecha_reporte,
+            DATE_FORMAT(r.fecha_programada, '%Y-%m-%d') AS fecha_programada,
+            e.nombre AS estado,
+            u.nombre AS residente,
+            res.nombre AS residencial,
+            COALESCE(ac.nombre, areac.nombre) AS ubicacion,
+            t.nombre AS tecnico
+        FROM reportes r
+        JOIN usuarios u ON u.id = r.usuario_id
+        JOIN estados_mantenimiento e ON e.id = r.estado_id
+        LEFT JOIN apartamento_casa ac ON ac.id = r.apartamento_id
+        LEFT JOIN areas_comunes areac ON areac.id = r.area_comun_id
+        LEFT JOIN residenciales res ON res.id = COALESCE(ac.residencial_id, areac.residencial_id)
+        LEFT JOIN usuarios t ON t.id = r.tecnico_id
+        WHERE r.id = ?
+    `
+    db.query(sql, [id], callback)
+}
+
+const listarComentarios = (id, callback) => {
+    const sql = `
+        SELECT c.id, c.comentario, c.created_at, e.nombre AS estado, u.nombre AS autor
+        FROM reporte_comentarios c
+        JOIN estados_mantenimiento e ON e.id = c.estado_id
+        JOIN usuarios u ON u.id = c.usuario_id
+        WHERE c.reporte_id = ?
+        ORDER BY c.created_at DESC, c.id DESC
+    `
+    db.query(sql, [id], callback)
+}
+
 const eliminar = (id, callback) => {
     const sql = "DELETE FROM reportes WHERE id = ?"
     db.query(sql, [id], callback)
@@ -151,5 +188,7 @@ module.exports = {
     listarAsignados,
     historialMantenimiento,
     listarTodos,
+    obtenerDetalle,
+    listarComentarios,
     eliminar,
 }

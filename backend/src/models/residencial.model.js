@@ -32,6 +32,12 @@ const desactivar = (id, callback) => {
     db.query(sql, [id], callback)
 }
 
+const activar = (id, callback) => {
+    const sql = "UPDATE residenciales SET estado = 'Activo' WHERE id = ?"
+
+    db.query(sql, [id], callback)
+}
+
 const listarEdificios = (callback) => {
     const sql = "SELECT id, residencial_id, nombre FROM edificios ORDER BY id ASC"
 
@@ -56,6 +62,7 @@ module.exports = {
     listar,
     actualizar,
     desactivar,
+    activar,
     listarEdificios,
     crearEdificios,
     eliminarEdificiosPorResidencial,

@@ -159,9 +159,28 @@ const desactivarResidencial = (id) => {
     })
 }
 
+const activarResidencial = (id) => {
+    return new Promise((resolve, reject) => {
+        residencialModel.activar(id, (error, results) => {
+            if (error) {
+                reject({ status: 500, message: "Error activando el residencial", error })
+                return
+            }
+
+            if (results.affectedRows === 0) {
+                reject({ status: 404, message: "Residencial no encontrado" })
+                return
+            }
+
+            resolve(results)
+        })
+    })
+}
+
 module.exports = {
     registrarResidencial,
     listarResidenciales,
     actualizarResidencial,
     desactivarResidencial,
+    activarResidencial,
 }

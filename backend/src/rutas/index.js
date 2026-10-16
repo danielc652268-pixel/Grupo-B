@@ -238,6 +238,13 @@ route.patch("/residenciales/:id/desactivar", verifyToken, (req, res, next) => {
     next()
 }, residencialController.desactivarResidencial)
 
+route.patch("/residenciales/:id/activar", verifyToken, (req, res, next) => {
+    if (req.user.role !== 1) {
+        return res.status(403).send({ error: "No tienes permiso para activar residenciales" })
+    }
+    next()
+}, residencialController.activarResidencial)
+
 route.post("/apartamento", verifyToken, (req, res, next) => {
     if (req.user.role !== 1) {
         return res.status(403).send({ error: "No tienes permiso para crear apartamentos/casas" })
@@ -330,6 +337,8 @@ route.patch("/reportes/:id/asignar", verifyToken, verificarRol(1), reporteContro
 route.get("/tecnicos", verifyToken, verificarRol(1), tecnicoController.obtenerTecnicos)
 
 route.get("/reportes", verifyToken, verificarRol(1), reporteController.obtenerTodosLosReportes)
+
+route.get("/reportes/:id", verifyToken, verificarRol(1), reporteController.obtenerDetalleReporte)
 
 route.delete("/reportes/:id", verifyToken, verificarRol(1), reporteController.eliminarReporte)
 

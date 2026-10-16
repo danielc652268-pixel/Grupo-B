@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import './AsignarReporte.css'
+import './TablaReportesAsignados.css'
 import './TablaTodosReportes.css'
+import DetalleReporte from './DetalleReporte'
 
 const ESTADOS = [
   { valor: 'PENDIENTE', etiqueta: 'Pendiente' },
@@ -12,7 +14,10 @@ const ESTADOS = [
   { valor: 'CANCELADO', etiqueta: 'Cancelado' },
 ]
 
+const ETIQUETAS_ESTADO = Object.fromEntries(ESTADOS.map((e) => [e.valor, e.etiqueta]))
+
 export default function TablaTodosReportes() {
+  const [reporteSeleccionado, setReporteSeleccionado] = useState(null)
   const [reportes, setReportes] = useState([])
   const [residenciales, setResidenciales] = useState([])
   const [tecnicos, setTecnicos] = useState([])
@@ -63,6 +68,15 @@ export default function TablaTodosReportes() {
 
     cargarReportes()
   }, [filtroResidencial, filtroEstado, filtroTecnico])
+
+  if (reporteSeleccionado) {
+    return (
+      <DetalleReporte
+        id={reporteSeleccionado}
+        onVolver={() => setReporteSeleccionado(null)}
+      />
+    )
+  }
 
   return (
     <div className="asignar-reporte-container">
@@ -117,6 +131,7 @@ export default function TablaTodosReportes() {
               <th>Ubicación</th>
               <th>Técnico</th>
               <th>Estado</th>
+              <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
@@ -127,13 +142,25 @@ export default function TablaTodosReportes() {
                 <td>{reporte.residencial || '-'}</td>
                 <td>{reporte.ubicacion || '-'}</td>
                 <td>{reporte.tecnico || 'Sin asignar'}</td>
-                <td>{reporte.estado}</td>
+                <td>
+                  <span className={`estado-etiqueta estado-${reporte.estado}`}>
+                    {ETIQUETAS_ESTADO[reporte.estado] || reporte.estado}
+                  </span>
+                </td>
+                <td>
+                  <button
+                    className="boton-verReporte"
+                    onClick={() => setReporteSeleccionado(reporte.id)}
+                  >
+                    Ver detalles
+                  </button>
+                </td>
               </tr>
             ))}
 
             {reportes.length === 0 && (
               <tr>
-                <td colSpan="6" className="asignar-reporte-vacio">
+                <td colSpan="7" className="asignar-reporte-vacio">
                   No hay reportes con esos filtros.
                 </td>
               </tr>

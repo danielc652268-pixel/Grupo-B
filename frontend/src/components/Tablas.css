@@ -1,0 +1,251 @@
+/* Estilo común de todas las tablas (Admin, Técnico y Residente).
+   Basado en la tabla del Inicio (Historial). Cargado al final para
+   tener prioridad sobre los estilos propios de cada componente. */
+
+:root {
+  --tabla-fondo: #f5f7fb;
+  --tabla-tarjeta: #ffffff;
+  --tabla-texto: #1e293b;
+  --tabla-texto-suave: #64748b;
+  --tabla-borde: #e8ecf3;
+  --tabla-hover: #f9fafd;
+}
+
+/* Tarjeta blanca que envuelve la tabla */
+.tabla-contenedor,
+.tabla-usuarios-container,
+.tabla-residenciales-container,
+.tabla-apartamento-container {
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 24px;
+  padding: 12px 22px;
+  overflow-x: auto;
+  background: var(--tabla-tarjeta);
+  border: none;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(30, 41, 59, 0.06);
+}
+
+.tarjeta .tabla-contenedor {
+  margin-top: 0;
+  padding: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.asignar-reporte-container {
+  border: none;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(30, 41, 59, 0.06);
+}
+
+/* Tablas */
+.tabla-contenedor table,
+.tabla-usuarios,
+.tabla-residenciales,
+.tabla-apartamento,
+.asignar-reporte-tabla {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 0.95rem;
+  text-align: left;
+}
+
+.tabla-contenedor thead,
+.tabla-usuarios thead,
+.tabla-residenciales thead,
+.tabla-apartamento thead,
+.asignar-reporte-tabla thead {
+  background: transparent;
+}
+
+.tabla-contenedor th,
+.tabla-usuarios th,
+.tabla-residenciales th,
+.tabla-apartamento th,
+.asignar-reporte-tabla th {
+  padding: 10px 14px;
+  background: transparent;
+  color: var(--tabla-texto-suave);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-align: left;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--tabla-borde);
+}
+
+.tabla-contenedor td,
+.tabla-usuarios td,
+.tabla-residenciales td,
+.tabla-apartamento td,
+.asignar-reporte-tabla td {
+  padding: 14px;
+  color: var(--tabla-texto);
+  font-size: 0.95rem;
+  border-bottom: 1px solid var(--tabla-borde);
+}
+
+.tabla-contenedor tbody tr:last-child td,
+.tabla-usuarios tbody tr:last-child td,
+.tabla-residenciales tbody tr:last-child td,
+.tabla-apartamento tbody tr:last-child td,
+.asignar-reporte-tabla tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.tabla-contenedor tbody tr:hover,
+.tabla-usuarios tbody tr:hover,
+.tabla-residenciales tbody tr:hover,
+.tabla-apartamento tbody tr:hover,
+.asignar-reporte-tabla tbody tr:hover {
+  background: var(--tabla-hover);
+}
+
+/* Filas vacías y mensajes */
+.tabla-usuarios-vacio,
+.tabla-residenciales-vacio,
+.tabla-apartamento-vacio,
+.asignar-reporte-vacio {
+  padding: 28px;
+  text-align: center;
+  color: var(--tabla-texto-suave);
+}
+
+.tabla-usuarios-mensaje,
+.tabla-residenciales-mensaje,
+.tabla-apartamento-mensaje {
+  color: var(--tabla-texto-suave);
+}
+
+/* Etiquetas de estado: píldora con puntito de color */
+.estado-badge,
+.estado-badge-usuario,
+.estado-etiqueta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: #f3f4f6;
+  color: #4b5563;
+  font-size: 0.85rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.estado-badge::before,
+.estado-badge-usuario::before,
+.estado-etiqueta::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.estado-activo,
+.estado-activo-usuario,
+.estado-etiqueta.estado-COMPLETADO { background: #dcfce7; color: #15803d; }
+
+.estado-inactivo,
+.estado-inactivo-usuario,
+.estado-etiqueta.estado-CANCELADO { background: #fee2e2; color: #b91c1c; }
+
+.estado-en-construcción,
+.estado-etiqueta.estado-EN_PROCESO { background: #fef3c7; color: #b45309; }
+
+.estado-etiqueta.estado-PROGRAMADO { background: #e0e7ff; color: #4338ca; }
+.estado-etiqueta.estado-ASIGNADO { background: #e0f2fe; color: #0369a1; }
+.estado-etiqueta.estado-PENDIENTE { background: #f3f4f6; color: #4b5563; }
+
+/* ---------- Que las tablas nunca sobresalgan de la pantalla ---------- */
+
+/* Un hijo flex no se encoge por debajo de su contenido salvo que se indique */
+.layout-main,
+.layout-content {
+  min-width: 0;
+}
+
+/* Todas las tarjetas de tabla: centradas y con ancho máximo común */
+.tabla-contenedor,
+.tabla-usuarios-container,
+.tabla-residenciales-container,
+.tabla-apartamento-container,
+.asignar-reporte-container,
+.historial > *,
+.mantenimiento-tecnico {
+  width: 100%;
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+}
+
+.asignar-reporte-container {
+  padding: 22px;
+}
+
+/* La tabla se ajusta al ancho disponible y el texto largo se parte en líneas */
+.tabla-contenedor table,
+.tabla-usuarios,
+.tabla-residenciales,
+.tabla-apartamento,
+.asignar-reporte-tabla {
+  table-layout: auto;
+  max-width: 100%;
+}
+
+.tabla-contenedor th,
+.tabla-usuarios th,
+.tabla-residenciales th,
+.tabla-apartamento th,
+.asignar-reporte-tabla th,
+.tabla-contenedor td,
+.tabla-usuarios td,
+.tabla-residenciales td,
+.tabla-apartamento td,
+.asignar-reporte-tabla td {
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: normal;
+  max-width: none;
+  min-width: 0;
+  padding: 12px 10px;
+  vertical-align: middle;
+}
+
+.tabla-contenedor td.descripcion,
+.tabla-contenedor td:nth-child(4),
+.asignar-reporte-tabla td:nth-child(5) {
+  min-width: 0;
+  max-width: none;
+}
+
+.persona {
+  white-space: normal;
+}
+
+.tabla-residenciales-acciones {
+  display: table-cell;
+  white-space: normal;
+}
+
+/* Botones de acción: se acomodan en varias líneas si no caben */
+.tabla-contenedor td button,
+.tabla-usuarios td button,
+.tabla-residenciales td button,
+.tabla-apartamento td button,
+.asignar-reporte-tabla td button {
+  margin-bottom: 4px;
+}
+
+/* El contenedor mantiene scroll solo como último recurso en pantallas muy pequeñas */
+.tabla-contenedor,
+.tabla-usuarios-container,
+.tabla-residenciales-container,
+.tabla-apartamento-container,
+.asignar-reporte-container {
+  overflow-x: auto;
+}
