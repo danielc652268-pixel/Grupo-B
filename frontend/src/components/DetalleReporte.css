@@ -21,6 +21,24 @@
   overflow-wrap: anywhere;
 }
 
+.detalle-reporte-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.detalle-reporte-nota {
+  margin: -8px 0 20px;
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+.detalle-reporte-acciones button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .detalle-reporte h3 {
   margin: 8px 0 12px;
   font-size: 18px;
