@@ -87,14 +87,6 @@ const listarAsignados = (callback) => {
     db.query(sql, callback)
 }
 
-const historialMantenimiento = (callback) => {
-    const sql = `
-        SELECT id, categoria AS tipo, fecha_programada, descripcion, estado_id AS estado
-        FROM reportes
-        ORDER BY fecha_reporte DESC
-    `
-    db.query(sql, callback)
-}
 
 const listarTodos = (filtros, callback) => {
     const condiciones = []
@@ -149,7 +141,6 @@ module.exports = {
     obtenerPorId,
     asignarTecnico,
     listarAsignados,
-    historialMantenimiento,
     listarTodos,
     eliminar,
 }

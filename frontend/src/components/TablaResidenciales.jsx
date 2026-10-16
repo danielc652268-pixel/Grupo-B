@@ -6,11 +6,10 @@ import './TablaResidenciales.css';
 export default function TablaResidenciales({ recargar, onEditar }) {
     const [residenciales, setResidenciales] = useState([]);
     const [cargando, setCargando] = useState(true);
-    const [error, setError] = useState('');
+    
 
     const cargarResidenciales = async () => {
         setCargando(true);
-        setError('');
 
         try {
             const respuesta = await axios.get('http://localhost:3000/residenciales', {
@@ -18,7 +17,7 @@ export default function TablaResidenciales({ recargar, onEditar }) {
             });
             setResidenciales(respuesta.data);
         } catch (err) {
-            setError('No se pudieron cargar los residenciales.');
+            avisarError('No se pudieron cargar los residenciales.');
         } finally {
             setCargando(false);
         }
@@ -53,9 +52,6 @@ export default function TablaResidenciales({ recargar, onEditar }) {
         return <p className="tabla-residenciales-mensaje">Cargando residenciales...</p>;
     }
 
-    if (error) {
-        return <p className="tabla-residenciales-mensaje tabla-residenciales-error">{error}</p>;
-    }
 
     return (
         <div className="tabla-residenciales-container">
