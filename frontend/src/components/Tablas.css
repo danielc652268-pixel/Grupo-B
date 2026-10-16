@@ -168,7 +168,7 @@
   min-width: 0;
 }
 
-/* Todas las tarjetas de tabla: centradas y con ancho máximo común */
+/* Todas las tarjetas de tabla: centradas y con el mismo ancho máximo */
 .tabla-contenedor,
 .tabla-usuarios-container,
 .tabla-residenciales-container,
@@ -177,7 +177,7 @@
 .historial > *,
 .mantenimiento-tecnico {
   width: 100%;
-  max-width: 1100px;
+  max-width: 1400px;
   margin-left: auto;
   margin-right: auto;
   box-sizing: border-box;
@@ -187,16 +187,17 @@
   padding: 22px;
 }
 
-/* La tabla se ajusta al ancho disponible y el texto largo se parte en líneas */
 .tabla-contenedor table,
 .tabla-usuarios,
 .tabla-residenciales,
 .tabla-apartamento,
 .asignar-reporte-tabla {
   table-layout: auto;
-  max-width: 100%;
+  width: 100%;
 }
 
+/* Las palabras nunca se parten: el texto solo salta de línea en los espacios,
+   y cada columna toma como mínimo el ancho de su palabra más larga. */
 .tabla-contenedor th,
 .tabla-usuarios th,
 .tabla-residenciales th,
@@ -208,19 +209,30 @@
 .tabla-apartamento td,
 .asignar-reporte-tabla td {
   white-space: normal;
-  overflow-wrap: anywhere;
+  overflow-wrap: normal;
   word-break: normal;
+  hyphens: none;
   max-width: none;
   min-width: 0;
   padding: 12px 10px;
   vertical-align: middle;
 }
 
+/* Datos cortos que se leen mejor en una sola línea */
+.tabla-contenedor td:has(> .etiqueta),
+.tabla-contenedor td:has(> .estado-etiqueta),
+.tabla-usuarios td:has(> .estado-badge-usuario),
+.tabla-residenciales td:has(> .estado-badge),
+.asignar-reporte-tabla td:has(> .estado-etiqueta) {
+  white-space: nowrap;
+}
+
+/* Columnas de texto largo: ancho mínimo cómodo para que no queden angostas y altas */
 .tabla-contenedor td.descripcion,
-.tabla-contenedor td:nth-child(4),
-.asignar-reporte-tabla td:nth-child(5) {
-  min-width: 0;
-  max-width: none;
+.mantenimiento-tecnico .tabla-contenedor td:nth-child(4),
+.asignar-reporte-tabla td:nth-child(5),
+.tabla-residenciales td:nth-child(2) {
+  min-width: 200px;
 }
 
 .persona {
@@ -241,7 +253,7 @@
   margin-bottom: 4px;
 }
 
-/* El contenedor mantiene scroll solo como último recurso en pantallas muy pequeñas */
+/* Scroll horizontal dentro de la tarjeta solo como último recurso (pantallas muy pequeñas) */
 .tabla-contenedor,
 .tabla-usuarios-container,
 .tabla-residenciales-container,

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { avisarExito, avisarError } from "../../utils/notificaciones";
 import "./Login.css";
+import imagenLanding from "./images/Landing page - main image.webp";
 
 function Login() {
 
@@ -35,6 +36,12 @@ function Login() {
 
   return (
     <div className="login-container">
+
+      <div className="login-imagen">
+        <img src={imagenLanding} alt="JDM Repair - Todo el mantenimiento en un solo lugar" />
+      </div>
+
+      <div className="login-panel">
 
       <div className="login-card">
 
@@ -81,6 +88,8 @@ function Login() {
           </button>
 
         </form>
+
+      </div>
 
       </div>
 
